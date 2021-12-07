@@ -15,20 +15,34 @@
 
 ![](Easy_Rust_sample_image.png)
 
-## Introduction
+## はじめに
 
-Rust is a new language that already has good textbooks. But sometimes its textbooks are difficult because they are for native English speakers. Many companies and people now learn Rust, and they could learn faster with a book that has easy English. This textbook is for these companies and people to learn Rust with simple English.
+Rust は新しいプログラミング言語で、すでに優れた教科書がいろいろ出ています。
+しかし、その中には英語を母国語とする人向けに書かれたものがあり、まれに難解なものがあります。
+今や多くの企業や学生が Rust を学んでおり、もっと簡単な英語で書かれた教科書があればもっと早く習得できます。
+これは、そのように思っている企業や学生向けにやさしい英語で Rust を学べる教科書です。
 
-Rust is a language that is quite new, but already very popular. It's popular because it gives you the speed and control of C or C++ but also the memory safety of other newer languages like Python. It does this with some new ideas that are sometimes different from other languages. That means that there are some new things to learn, and you can't just "figure it out as you go along". Rust is a language that you have to think about for a while to understand. But it still looks pretty familiar if you know another language and it is made to help you write good code.
+Rust はかなり新しい部類のプログラミング言語になりますが、すでに大変人気があるプログラミング言語でもあります。
+その理由は、C言語やC++言語が持つ高速性と低レベルの制御だけではなく、Python といった現代的なプログラミング言語が実装しているメモリの安全性も提供していることです。
+これは他のプログラミング言語とは異なる新しい概念によって実現されています。
+つまり Rust には学ぶべき新しいことがいくつかあり、単に「順を追って理解していく」スタイルでは習得できません。
+Rust は理解するために立ち止まって考えなければならないプログラミング言語です。
+ただし、Rust 以外のプログラミングを習得しているなら、その知識がコードを書くお手本になるということはよく知られていることです。
 
-## Who am I?
+## 著者について
 
-I am a Canadian who lives in Korea, and I wrote Easy Rust while thinking of how to make it easy for companies here to start using it. I hope that other countries that don't use English as a first language can use it too.
+私は韓国に住むカナダ人で、ここの会社で働いているエンジニアが簡単に Rust 使い始めることができる方法をいろいろ考えながら本書を書きました。
+英語を母国語としない他の国でも、Rust を使えるようになることを願っています。
 
-## Writing Rust in Easy English
 
-*Rust in Easy English* was written from July to August 2020, and is over 400 pages long. You can contact me here or [on LinkedIn](https://www.linkedin.com/in/davemacleod) or [on Twitter](https://twitter.com/mithridates) if you have any questions. If you see anything wrong or have a pull request to make, go ahead. Over 20 people have already helped out by fixing typos and problems in the code, so you can too. I'm not the world's best Rust expert so I always like to hear new ideas or see where I can make the book better.
+## 本書について
 
+原書である "*Easy Rust*" は 2020年の6月から8月にかけて書かれたもので、400ページを超えるボリュームがあります。
+何かご不明な点があれば、著者の [Linkedin](https://www.linkedin.com/in/davemacleod) や [Twitter](https://twitter.com/mithridates) からお問い合わせ下さい。
+それ以外にも誤記や誤植、あるいは Pull Requrest などといったものも同様にどうぞ。
+すでに20人を越す人たちがサンプルコードにある誤植や問題点の解決を手助けしてくれました。
+あなたも参加できます。
+私は世界で一番の Rust の専門家ではないので、常に新しいアイデアを聞いたり、この教科書をより良くすることができる場所を見つけたりするのが好きです。
 
 
 - [Part 1 - Rust in your browser](#part-1---rust-in-your-browser)
