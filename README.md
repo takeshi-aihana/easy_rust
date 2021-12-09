@@ -19,15 +19,15 @@
 
 Rust は新しいプログラミング言語で、すでに優れた教科書がいろいろ出ています。
 しかし、その中には英語を母国語とする人向けに書かれたものがあり、まれに難解なものがあります。
-今や多くの企業や学生が Rust を学んでおり、もっと簡単な英語で書かれた教科書があればもっと早く習得できます。
-これは、そのように思っている企業や学生向けにやさしい英語で Rust を学べる教科書です。
+今や多くの企業や学生らが Rust を学んでおり、もっと簡単な英語で書かれた教科書があればもっと早く習得できます。
+これは、そのように思っている人たち向けに「やさしい英語」で Rust を学べる教科書です。
 
 Rust はかなり新しい部類のプログラミング言語になりますが、すでに大変人気があるプログラミング言語でもあります。
-その理由は、C言語やC++言語が持つ高速性と低レベルの制御だけではなく、Python といった現代的なプログラミング言語が実装しているメモリの安全性も提供していることです。
+その理由は、C言語やC++言語が持つ高速性と低レベルの制御だけではなく、Python といった現代的なプログラミング言語が実装しているメモリの安全性も提供しているからです。
 これは他のプログラミング言語とは異なる新しい概念によって実現されています。
-つまり Rust には学ぶべき新しいことがいくつかあり、単に「順を追って理解していく」スタイルでは習得できません。
-Rust は理解するために立ち止まって考えなければならないプログラミング言語です。
-ただし、Rust 以外のプログラミングを習得しているなら、その知識がコードを書くお手本になるということはよく知られていることです。
+つまり Rust には学ぶべき新しいことがいくつかあり、単に「学習を進めていけば理解できるようになる」といったスタイルでは習得できません。
+Rust は理解するために立ち止まって考えなければならないプログラミング言語なのです。
+ただし、Rust 以外のプログラミング言語を習得しているなら、その知識が Rust のコードを書くお手本になるということはよく知られていることです。
 
 ## 著者について
 
@@ -39,10 +39,10 @@ Rust は理解するために立ち止まって考えなければならないプ
 
 原書である "*Easy Rust*" は 2020年の6月から8月にかけて書かれたもので、400ページを超えるボリュームがあります。
 何かご不明な点があれば、著者の [Linkedin](https://www.linkedin.com/in/davemacleod) や [Twitter](https://twitter.com/mithridates) からお問い合わせ下さい。
-それ以外にも誤記や誤植、あるいは Pull Requrest などといったものも同様にどうぞ。
+それ以外にも誤記や誤植、あるいは Pull Requrest などといったものがありましたら同様にどうぞ。
 すでに20人を越す人たちがサンプルコードにある誤植や問題点の解決を手助けしてくれました。
 あなたも参加できます。
-私は世界で一番の Rust の専門家ではないので、常に新しいアイデアを聞いたり、この教科書をより良くすることができる場所を見つけたりするのが好きです。
+べつに私は世界で最高な Rust の専門家ではないので、常に新しいアイデアを聞いたり、この教科書をより良くすることができる場所を見つけたりするのが好きです。
 
 
 - [Part 1 - Rust in your browser](#part-1---rust-in-your-browser)
@@ -159,18 +159,36 @@ Rust は理解するために立ち止まって考えなければならないプ
   - [Cargo doc](#cargo-doc)
   - [The end?](#the-end?)
 
-# Part 1 - Rust in your browser
+# 第一部 - ブラウザ上で Rust を動かす
 
-This book has two parts. In Part 1, you will learn as much Rust as you can just in your browser. You can actually learn almost everything you need to know without installing Rust, so Part 1 is very long. Then at the end is Part 2. It is much shorter, and is about Rust on your computer. That's where you will learn everything else you need to know that you can only do outside of a browser. Some examples are: working with files, taking user input, graphics, and personal settings. Hopefully, by the end of Part 1 you will like Rust enough that you will install it. And if you don't, no problem - Part 1 teaches you so much that you won't mind.
+本書は二部に分かれています。
+第一部ではお使いのウェブブラウザの中から Rust についてできるだけ多くのことを学習します。
+実際のところ Rust をインストールしなくても、Rust について知っておく必要があるほとんどすべてのことを学習できるので、この第一部はとても長い構成になっています。
+そして最後に第二部があります。
+こちらはとても短い構成になっていて、お使いのパソコン上で Rust を使ってみます。
+そこでは、ブラウザの外でしかできないことについて必要なことをすべて学習します。
+次に示す課題についてサンプルコードが用意されています：
+ファイルの操作、ユーザ入力の受け取り、グラフィックス、そして個人設定
+願わくば第一部の最後まで学習した時点で、Rust をインストールするに値するほど気に入ってくれるものと思います。
+たとえそうでなくても問題ありません。
+第一部では、そんなことをが気にならないくらい、たくさんのことを学びます。
 
-## Rust Playground
-**[See this chapter on YouTube](https://youtu.be/-lYeJeQ11OI)**
+## "Rust Playground"
+**[この章の YouTube 版を見る](https://youtu.be/-lYeJeQ11OI)**
 
-Maybe you don't want to install Rust yet, and that's okay. You can go to [https://play.rust-lang.org/](https://play.rust-lang.org/) and start writing Rust without leaving your browser. You can write your code there and click Run to see the results. You can run most of the samples in this book inside the Playground in your browser. Only near the end you will see samples that go beyond what you can do in the Playground (like opening files).
+おそらく、まだ Rust をインストールしたいとは思っていないでしょう。
+それは問題ありません。
+ウェブブラウザから [https://play.rust-lang.org/](https://play.rust-lang.org/) にある "Rust Playground" というサイトへ移動し、ブラウザの中から Rust のプログラミングを始めることができます。
+そこでプログラミングしたコードは ``RUN`` ボタンをクリックすると結果が表示されます。
+本書に含まれるほとんどのサンプルコードを Playground で実行することができます。
+唯一、本書の最後の方にあるサンプルコードだけ Playground では実行できないものです（例えばファイルを開くといったプログラム）。
 
-Here are some tips when using the Rust Playground:
+ここには Rust Playground を利用する際のヒントをまとめました：
 
-- Run your code with Run
+- 作成したコードは ``RUN`` ボタンで実行する
+- ``Debug`` モードから ``Release`` モードで変更すると実行が速くなる：
+  - ``Debug`` モード：
+  - ``Release`` モード：
 - Change Debug to Release if you want your code to be faster. Debug: compiles faster, runs slower, contains debug information. Release: compiles slower, runs much faster, removes debug information.
 - Click on Share to get a url link. You can use that to share your code if you want help. After you click share, you can click on `Open a new thread in the Rust user forum` to ask people there for help right away.
 - Tools: Rustfmt will format your code nicely.
