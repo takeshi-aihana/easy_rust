@@ -179,32 +179,44 @@ Rust は理解するために立ち止まって考えなければならないプ
 おそらく、まだ Rust をインストールしたいとは思っていないでしょう。
 それは問題ありません。
 ウェブブラウザから [https://play.rust-lang.org/](https://play.rust-lang.org/) にある "Rust Playground" というサイトへ移動し、ブラウザの中から Rust のプログラミングを始めることができます。
-そこでプログラミングしたコードは ``RUN`` ボタンをクリックすると結果が表示されます。
+そこでプログラミングしたコードは `RUN` ボタンをクリックすると結果が表示されます。
 本書に含まれるほとんどのサンプルコードを Playground で実行することができます。
 唯一、本書の最後の方にあるサンプルコードだけ Playground では実行できないものです（例えばファイルを開くといったプログラム）。
 
 ここには Rust Playground を利用する際のヒントをまとめました：
 
 - 作成したコードは ``RUN`` ボタンで実行する
-- ``Debug`` モードから ``Release`` モードで変更すると実行が速くなる：
-  - ``Debug`` モード：
-  - ``Release`` モード：
-- Change Debug to Release if you want your code to be faster. Debug: compiles faster, runs slower, contains debug information. Release: compiles slower, runs much faster, removes debug information.
-- Click on Share to get a url link. You can use that to share your code if you want help. After you click share, you can click on `Open a new thread in the Rust user forum` to ask people there for help right away.
-- Tools: Rustfmt will format your code nicely.
-- Tools: Clippy will give you extra information about how to make your code better.
-- Config: here you can change your theme to dark mode so you can work at night, and many other configurations.
+- `Debug` モードから ``Release`` モードに変更すると実行が速くなる：
+  - `Debug` モード: コンパイルは速いが実行は遅い（デバッグ情報が含まれる）
+  - `Release` モード: コンパイルは遅いが実行はとても速い（デバッグ情報は削除される）
+- `SHARE` ボタンをクリックすると、その Playground の URL を取得する
+  - このリンクを使って自分が作成したコードを他の人と共有でき（例えばコード作成で助けが欲しいときなど）、``SHARE`` ボタンをクリックしたあと "`Open a new thread in the Rust user forum`" のリンクをクリックしてフォーラムにいる人に素早く助けを求めることができる
+- ``TOOLS`` ボタン:
+  - `Rustfmt` はコードをきれいに整形してくれる
+  - `Clippy` はコードを改善する方法について追加情報を提示してくれる
+- `CONFIG` ボタン: ここでエディタのテーマを「ダークモード」（夜にコードを書いている時に見やすくなる）に変更したり、その他の設定を変更できる
 
-If you want to install Rust, go here [https://www.rust-lang.org/tools/install](https://www.rust-lang.org/tools/install) and follow the instructions. Usually you will use `rustup` to install and update Rust.
+もし Rust を自分の環境にインストールしたいのであれば、[https://www.rust-lang.org/tools/install](https://www.rust-lang.org/tools/install) にある手順に従って下さい。
+通常は `rustup` コマンドを使って Rust をインストールしたり更新します。
 
-## 🚧 and ⚠️
+## 🚧 と ⚠️  のアイコン
 
-Sometimes the code examples in the book don't work. If an example doesn't work, it will have a 🚧 or a ⚠️ in it. 🚧 is like "under construction": it means that the code is not complete. Rust needs a `fn main()` (a main function) to run, but sometimes we just want to look at small pieces of code so it won't have a `fn main()`. Those examples are correct, but need a `fn main()` for you to run them. And some code examples show you a problem that we will fix. Those ones might have a `fn main()` but generate an error, and so they will have a ⚠️.
+まれに本書で紹介したサンプルコードが動作しない場合があります。
+そのようなサンプルコードには 🚧 または ⚠️  のアイコンが付いているはずです。
+🚧  は「工事中」といった意味で、コードは未完成であることを示しています。
+Rust では実行するのに一個の `fn main()`（メイン関数）が必要ですが、まれにコードの一部だけを取り上げて説明したいことがあるので、そのようなコードには `fn main()` を記述していません。
+それらのサンプルコードは問題があるというわけではなく、実際に動かすには `fn main()` が必要です。
+またサンプルコードの中には修正予定の問題を提示しているものがあります。
+それらのコードには `fn main()` が記述されていますが、実際に動かすとエラーになるので ⚠️  が付いています。
 
-## Comments
-**[See this chapter on YouTube](https://youtu.be/fJ7jBZG_Rpo)**
+## コメント
+**[この章の YouTube 版を見る](https://youtu.be/fJ7jBZG_Rpo)**
 
-Comments are made for programmers to read, not the computer. It's good to write comments to help other people understand your code.  It's also good to help you understand your code later.  (Many people write good code but then forget why they wrote it.) To write comments in Rust you usually use `//`:
+コメントはコンピュータではなくプログラマに読んでもらうためのものです。
+他の人たちに自分のコードを理解してもらうためにコメントを書くことは良いことです。
+またあとで自分のコードを見直す際にも役立ちます
+（多くの人たちは良いコードを書いていますが、あとでなぜそんなコードを書いたのが忘れてしまうものです）。
+Rust でコメントを書く際は、通常は `//` を使います:
 
 ```rust
 fn main() {
