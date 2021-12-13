@@ -45,10 +45,10 @@ Rust は理解するために立ち止まって考えなければならないプ
 べつに私は世界で最高な Rust の専門家ではないので、常に新しいアイデアを聞いたり、この教科書をより良くすることができる場所を見つけたりするのが好きです。
 
 
-- [Part 1 - Rust in your browser](#part-1---rust-in-your-browser)
-  - [Rust Playground](#rust-playground)
-  - [🚧 and ⚠️](#-and-️)
-  - [Comments](#comments)
+- [第一部 ブラウザ上で Rust を動かす](#part-1---rust-in-your-browser)
+  - ["Rust Playground" について](#rust-playground)
+  - [🚧 と ⚠️  のアイコン] (#-and-️)
+  - [コメントの書き方](#comments)
   - [Types](#types)
     - [Primitive types](#primitive-types)
   - [Type inference](#type-inference)
@@ -173,15 +173,15 @@ Rust は理解するために立ち止まって考えなければならないプ
 たとえそうでなくても問題ありません。
 第一部では、そんなことをが気にならないくらい、たくさんのことを学びます。
 
-## "Rust Playground"
-**[この章の YouTube 版を見る](https://youtu.be/-lYeJeQ11OI)**
+## "Rust Playground" について
+**[この章の YouTube 版を観る](https://youtu.be/-lYeJeQ11OI)**
 
-おそらく、まだ Rust をインストールしたいとは思っていないでしょう。
-それは問題ありません。
-ウェブブラウザから [https://play.rust-lang.org/](https://play.rust-lang.org/) にある "Rust Playground" というサイトへ移動し、ブラウザの中から Rust のプログラミングを始めることができます。
+おそらく Rust をインストールするのはまだ早いと思っているのではないでしょうか。
+それで問題ありません。
+ウェブブラウザから [https://play.rust-lang.org/](https://play.rust-lang.org/) にある "Rust Playground" というサイトへ移動し、ブラウザの中で Rust のプログラミングを始めることができます。
 そこでプログラミングしたコードは `RUN` ボタンをクリックすると結果が表示されます。
-本書に含まれるほとんどのサンプルコードを Playground で実行することができます。
-唯一、本書の最後の方にあるサンプルコードだけ Playground では実行できないものです（例えばファイルを開くといったプログラム）。
+本書に含まれるほとんどのサンプルコードを、この Rust Playground で実行できます。
+唯一、本書の最後の方にあるサンプルコード（例えばファイルを開くといったプログラム）だけ Rust Playground では実行できないです。
 
 ここには Rust Playground を利用する際のヒントをまとめました：
 
@@ -209,8 +209,8 @@ Rust では実行するのに一個の `fn main()`（メイン関数）が必要
 またサンプルコードの中には修正予定の問題を提示しているものがあります。
 それらのコードには `fn main()` が記述されていますが、実際に動かすとエラーになるので ⚠️  が付いています。
 
-## コメント
-**[この章の YouTube 版を見る](https://youtu.be/fJ7jBZG_Rpo)**
+## コメントの書き方
+**[この章の YouTube 版を観る](https://youtu.be/fJ7jBZG_Rpo)**
 
 コメントはコンピュータではなくプログラマに読んでもらうためのものです。
 他の人たちに自分のコードを理解してもらうためにコメントを書くことは良いことです。
@@ -220,15 +220,18 @@ Rust でコメントを書く際は、通常は `//` を使います:
 
 ```rust
 fn main() {
-    // Rust programs start with fn main()
-    // You put the code inside a block. It starts with { and ends with }
-    let some_number = 100; // We can write as much as we want here and the compiler won't look at it
+    // Rust のプログラムは fn main() で始まります
+    // このブロックの中にコードを書きます
+    // ブロックは { で始まって } で終わります
+    let some_number = 100; // ここから先は好きなだけコメントを書くことができます（コンパイラはコメントを無視します）
 }
 ```
 
-When you do this, the compiler won't look at anything to the right of the `//`.
+コメントを書くと、コンパイラは `//`` より右側にあるものはすべて無視します。
 
-There is another kind of comment that you write with `/*` to start and `*/` to end. This one is useful to write in the middle of your code.
+これとは別に `/*` で始まり `*/` で終わるコメントもあります。
+この書き方は、次のようにコードの途中にコメントを書きたい時に便利です：
+
 
 ```rust
 fn main() {
@@ -236,35 +239,43 @@ fn main() {
 }
 ```
 
-To the compiler, `let some_number/*: i16*/ = 100;` looks like `let some_number = 100;`.
+コンパイラには、`let some_number/*: i16*/ = 100;` の文は `let some_number = 100;` のように見えます。
 
-The `/* */` form is also useful for very long comments over more than one line. In this example you can see that you need to write `//` for every line. But if you type `/*`, it won't stop until you finish it with `*/`.
+
+また `/* */` 形式は複数行にまたがるとても長いコメントを書く際に便利です。
+次の例だと、行ごとに `//` で始める必要があるのがわかると思います。
+でも `/*` で始めると `*/` で終わるまでコメントを続けることができます。
+
 
 ```rust
 fn main() {
-    let some_number = 100; /* Let me tell you
-    a little about this number.
-    It's 100, which is my favourite number.
-    It's called some_number but actually I think that... */
+    let some_number = 100; /* この数値について少しコメント
+    を残しておきます。
+    100 は自分の好きな数値です。
+    これは some_number と呼ばれていますが、実は ... */
 
-    let some_number = 100; // Let me tell you
-    // a little about this number.
-    // It's 100, which is my favourite number.
-    // It's called some_number but actually I think that...
+    let some_number = 100; // この数値について少しコメント
+    // を残しておきます
+    // 100 は自分の好きな数値です
+    // これは some_number と呼ばれていますが、実は ...
 }
 ```
 
-## Types
+## いろいろな型
 
-Rust has many types that let you work with numbers, characters, and so on. Some are simple, others are more complicated, and you can even create your own.
+Rust には数字や文字などを操作できる型がいろいろあります。
+単純な型もあれば複雑な型もあり、独自の型を作成することも可能です。
 
-### Primitive types
-**[See this chapter on YouTube](https://youtu.be/OxTPU5UGMhs)**
+### 基本型（Primitive type）
+**[この章の YouTube を観る](https://youtu.be/OxTPU5UGMhs)**
 
-Rust has simple types that are called **primitive types** (primitive = very basic). We will start with integers and `char` (characters). Integers are whole numbers with no decimal point. There are two types of integers:
+Rust には **基本型（primitive types）**（*primitive* = かなり基本的な） 呼ばれる単純な型があります。
+まず整数型と `char`（文字型）から始めることにしましょう。
+整数型は小数点のない数値全体を表します。
+整数型には二種類あります：
 
-- Signed integers,
-- Unsigned integers.
+- 符号付き整数型
+- 符号なし整数型
 
 Signed means `+` (plus sign) and `-` (minus sign), so signed integers can be positive or negative (e.g. +8, -8). But unsigned integers can only be positive, because they do not have a sign.
 
