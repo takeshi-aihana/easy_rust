@@ -181,9 +181,9 @@ Rust は理解するために立ち止まって考えなければならないプ
 ウェブブラウザから [https://play.rust-lang.org/](https://play.rust-lang.org/) にある "Rust Playground" というサイトへ移動し、ブラウザの中で Rust のプログラミングを始めることができます。
 そこでプログラミングしたコードは `RUN` ボタンをクリックすると結果が表示されます。
 本書に含まれるほとんどのサンプルコードを、この Rust Playground で実行できます。
-唯一、本書の最後の方にあるサンプルコード（例えばファイルを開くといったプログラム）だけ Rust Playground では実行できないです。
+唯一、本書の最後の方にあるサンプルコード（例えばファイルを開くといったプログラム）だけ Rust Playground では実行できません。
 
-ここには Rust Playground を利用する際のヒントをまとめました：
+以下に Rust Playground を利用する際のヒントをまとめました：
 
 - 作成したコードは ``RUN`` ボタンで実行する
 - `Debug` モードから ``Release`` モードに変更すると実行が速くなる：
@@ -269,25 +269,39 @@ Rust には数字や文字などを操作できる型がいろいろあります
 ### 基本型（Primitive type）
 **[この章の YouTube を観る](https://youtu.be/OxTPU5UGMhs)**
 
-Rust には **基本型（primitive types）**（*primitive* = かなり基本的な） 呼ばれる単純な型があります。
-まず整数型と `char`（文字型）から始めることにしましょう。
-整数型は小数点のない数値全体を表します。
-整数型には二種類あります：
+Rust には **基本型（primitive types）**（*primitive* = 「かなり基本的な」という意） と呼ばれる単純な型があります。
+まず整数と文字（`char`）から始めることにしましょう。
+整数は小数点のない数値全体を表します。
+整数には二種類あります：
 
-- 符号付き整数型
-- 符号なし整数型
+- 符号あり整数
+- 符号なし整数
 
-Signed means `+` (plus sign) and `-` (minus sign), so signed integers can be positive or negative (e.g. +8, -8). But unsigned integers can only be positive, because they do not have a sign.
+「符号」とは `+`（プラス記号）と `-`（マイナス記号）のことで、符号あり整数は正または負（例えば +8 または -8）になれます。
+一方、符号なしの整数は、この符号を持たないので正の数値にしかなれません。
 
-The signed integers are: `i8`, `i16`, `i32`, `i64`, `i128`, and `isize`.
-The unsigned integers are: `u8`, `u16`, `u32`, `u64`, `u128`, and `usize`.
+符号ありの整数には： `i8`, `i16`, `i32`, `i64`, `i128`, そして `isize `といった型があります。
+符号なしの整数には： `u8`, `u16`, `u32`, `u64`, `u128`, そして `usize` といった型があります。
 
-The number after the i or the u means the number of bits for the number, so numbers with more bits can be larger. 8 bits = one byte, so `i8` is one byte, `i64` is 8 bytes, and so on. Number types with larger sizes can hold larger numbers. For example, a `u8` can hold up to 255, but a `u16` can hold up to 65535. And a `u128` can hold up to 340282366920938463463374607431768211455.
+これらの型で i や u の後ろについている数字は、その型のサイズ（ビット数）を表していおり、数字が大きいほどサイズが大きくなります。
+すなわち 8ビット = 1バイト長なので `i8` は1バイト長、`i64` は 8バイト長（以下、同様）になります。
+サイズが大きな型はより大きな数値を格納できます。
+例えば、`u8` 型は最大で 255 までの数値を格納できますが、`u16` 型はさらに 65535 までの数値を格納できます。
+そして `u128` 型になると最大で 340282366920938463463374607431768211455 までの数値を格納できるといった具合です。
 
-So what is `isize` and `usize`? This means the number of bits on your type of computer. (The number of bits on your computer is called the **architecture** of your computer.) So `isize` and `usize` on a 32-bit computer is like `i32` and `u32`, and `isize` and `usize` on a 64-bit computer is like `i64` and `u64`.
+では `isize` 型と `usize`型はどうでしょうか？
+これらは、お使いのコンピュータにおけるビット数を表しています
+（自分が使っているコンピュータのビット数のことを、コンピュータの**アーキテクチャ**と呼びます)。
+そのため、自分が使っているコンピュータが 32ビットのコンピュータであれば `isize` と `usize` はそれぞれ `i32` 型と `u32` 型と同じであり、64ビットのコンピュータであれば `isize` と `usize` はそれぞれ `i64` 型と `u64` 型と同じです。
 
-There are many reasons for the different types of integers. One reason is computer performance: a smaller number of bytes is faster to process. For example, the number -10 as an `i8` is `11110110`, but as an `i128` it is `11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111110110`. But here are some other uses:
+整数を表すのに異なる型が存在している理由はいろいろです。
+一つは、コンピュータのパフォーマンスに関係するものです：
+すなわち、バイト数が小さいほど実行速度が速くなります。
+例えば `i8` 型に格納された -10 という数値は `11110110` ですが、`i128` 型の場合は `11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111110110` です。
+ただし他にもいくつかの用途があります：
 
+Rust における文字は `char` と呼ばれています。
+すべての `char` は一個の数値です。has a number: the letter `A` is number 65, while the character `友` ("friend" in Chinese) is number 21451. The list of numbers is called "Unicode". Unicode uses smaller numbers for characters that are used more, like A through Z, or digits 0 through 9, or space.
 Characters in Rust are called `char`. Every `char` has a number: the letter `A` is number 65, while the character `友` ("friend" in Chinese) is number 21451. The list of numbers is called "Unicode". Unicode uses smaller numbers for characters that are used more, like A through Z, or digits 0 through 9, or space.
 
 ```rust
