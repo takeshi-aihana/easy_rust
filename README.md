@@ -346,7 +346,11 @@ error[E0604]: only `u8` can be cast as `char`, not `i32`
   |                    ^^^^^^^^^^^^^^^^^
 ```
 
-Fortunately we can easily fix this with `as`. We can't cast `i32` as a `char`, but we can cast an `i32` as a `u8`. And then we can do the same from `u8` to `char`. So in one line we use `as` to make my_number a `u8`, and again to make it a `char`. Now it will compile:
+幸いにも、この問題はキーワード `as` を使って簡単に修正できます。
+`i32` 型をそのまま `char` 型にキャストすることはできませんが、`i32` 型を `u8` 型にキャストすることは可能です。
+そして同様に `u8` 型から `char` 型のキャストも可能です。
+したがって、まずキーワード `as` を使い `my_number` を `u8` 型にキャストし、再び `as` を使って `char` 型にキャストします。
+これでコンパイルが成功します：
 
 ```rust
 fn main() {
@@ -355,49 +359,52 @@ fn main() {
 }
 ```
 
-It prints `d` because that is the `char` in place 100.
+これは、100 を文字（`char` 型）で出力するので `d` となります。
 
-The easier way, however, is just to tell Rust that `my_number` is a `u8`. Here's how you do it:
+しかしながら、もっと簡単な方法は `my_number` が `u8` 型であることを Rust に伝えておくことです。
+次のように書きます：
 
 ```rust
 fn main() {
-    let my_number: u8 = 100; //  change my_number to my_number: u8
+    let my_number: u8 = 100; // my_number を my_number: u8 に変更する
     println!("{}", my_number as char);
 }
 ```
 
-So those are two reasons for all the different number types in Rust. Here is another reason: `usize` is the size that Rust uses for *indexing*. (Indexing means "which item is first", "which item is second", etc.) `usize` is the best size for indexing because:
+これらが Rust で同じ数値に異なる型が提供されている二つの理由ですが、ここにもう一つ別の理由があります：
+`usize` 型は Rust が*インデクス* を作成する際に使用するサイズです（「インデクスを作成する」とは「どのアイテムが一番目で、二番目のアイテムはどれか」といったアイテムを順番付けすることです）．
+この `usize` 型がインデックスのサイズに最適な理由は：
 
-- An index can't be negative, so it needs to be a number with a u
-- It should be big, because sometimes you need to index many things, but
-- It can't be a u64 because 32-bit computers can't use u64.
+- インデックスは負の数にはできないので、`u` が付いた型にする必要がある
+- たまにたくさんのアイテムにインデックスを付ける必要があるので大きな数値にすべきであるが、
+- 32-ビットのコンピュータでは `u64` 型は使えないので `u64` 型にすることはできません
 
-So Rust uses `usize` so that your computer can get the biggest number for indexing that it can read.
+そのため Rust では `useize` 型を使って、お使いのコンピュータが読み取ることができるインデックスの最大値を取得できるようになっています。
 
+それでは `char` 型についてもっと見ていくことにします。
+ここまで `char` 型は常に一つの文字であることを見てきました。そして `""` の代わりに `''` を使うことも。
 
+あらゆる種類の文字を保持するには 4バイトで十分なので、すべての `chars` 型はメモリを 4バイトを使用します：
 
-Let's learn some more about `char`. You saw that a `char` is always one character, and uses `''` instead of `""`.
+- 基本的な文字と記号は通常、4バイトのうち1バイトだけ使用します：例えば `a b 1 2 + - = $ @`
+- ドイツ語のウムラウトやアクセントのような文字 4バイトのうち 2バイトだけ使用します： 例えば `ä ö ü ß è é à ñ`
+- 日本語、韓国語、あるいは中国語の文字は 3ないし 4バイト使用します： 例えば `国 안 녕`
 
-All `chars` use 4 bytes of memory, since 4 bytes are enough to hold any kind of character:
-- Basic letters and symbols usually need 1 out of 4 bytes: `a b 1 2 + - = $ @`
-- Other letters like German Umlauts or accents need 2 out of 4 bytes: `ä ö ü ß è é à ñ`
-- Korean, Japanese or Chinese characters need 3 or 4 bytes: `国 안 녕`
+文字列の一部としていくつかの文字を使用する場合、 文字列はそれらの文字に必要なメモリのうち一番小さいサイズになるようにエンコードされます。
 
-When using characters as part of a string, the string is encoded to use the least amount of memory needed for each character.
-
-We can use `.len()` to see this for ourselves:
+メソッド `.len()` を使って、これらの状況を自分で確認できます：
 
 ```rust
 fn main() {
-    println!("Size of a char: {}", std::mem::size_of::<char>()); // 4 bytes
-    println!("Size of string containing 'a': {}", "a".len()); // .len() gives the size of the string in bytes
+    println!("Size of a char: {}", std::mem::size_of::<char>()); // これは 4バイト
+    println!("Size of string containing 'a': {}", "a".len()); // .len() は文字列のサイズをバイト単位で返します
     println!("Size of string containing 'ß': {}", "ß".len());
     println!("Size of string containing '国': {}", "国".len());
     println!("Size of string containing '𓅱': {}", "𓅱".len());
 }
 ```
 
-This prints:
+この結果は：
 
 ```text
 Size of a char: 4
@@ -407,7 +414,7 @@ Size of string containing '国': 3
 Size of string containing '𓅱': 4
 ```
 
-You can see that `a` is one byte, the German `ß` is two, the Japanese `国` is three, and the ancient Egyptian `𓅱` is 4 bytes.
+文字 `a` は 1バイト、ドイツ語の文字 `ß` は 2バイト、日本語の文字 `国` は 3バイト、古代エジプト語の文字 `𓅱`  は 4バイトです。
 
 ```rust
 fn main() {
