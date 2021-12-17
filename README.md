@@ -49,8 +49,8 @@ Rust は理解するために立ち止まって考えなければならないプ
   - ["Rust Playground" について](#rust-playground)
   - [🚧 と ⚠️  のアイコン] (#-and-️)
   - [コメントの書き方](#comments)
-  - [Types](#types)
-    - [Primitive types](#primitive-types)
+  - [いろいろな型](#types)
+    - [基本型（Primitive type）](#primitive-types)
   - [Type inference](#type-inference)
     - [Floats](#floats)
   - [Printing 'hello, world!'](#printing-hello-world)
@@ -325,7 +325,7 @@ Rust の言語仕様はとても厳格なので、キーワードの `as` を使
 例えば、次のコードは動きません：
 
 ```rust
-fn main() { // main() は Rust のプログラムが実行を開始する場所で、コードは中括弧の {} の中に記述します
+fn main() { // main() は Rust のプログラムが実行を開始する場所で、そのコードは中括弧 {} の中に記述します
 
     let my_number = 100; // 整数の型を明示的に書かなかったので
                          // Rust は i32 型を選択した
@@ -397,7 +397,7 @@ fn main() {
 ```rust
 fn main() {
     println!("Size of a char: {}", std::mem::size_of::<char>()); // これは 4バイト
-    println!("Size of string containing 'a': {}", "a".len()); // .len() は文字列のサイズをバイト単位で返します
+    println!("Size of string containing 'a': {}", "a".len()); // .len() は文字列のサイズをバイト単位で返えす
     println!("Size of string containing 'ß': {}", "ß".len());
     println!("Size of string containing '国': {}", "国".len());
     println!("Size of string containing '𓅱': {}", "𓅱".len());
@@ -420,22 +420,23 @@ Size of string containing '𓅱': 4
 fn main() {
     let slice = "Hello!";
     println!("Slice is {} bytes.", slice.len());
-    let slice2 = "안녕!"; // Korean for "hi"
+    let slice2 = "안녕!"; // 韓国語で「こんにちは」と言う意味
     println!("Slice2 is {} bytes.", slice2.len());
 }
 ```
 
-This prints:
+この結果は：
 
 ```text
 Slice is 6 bytes.
 Slice2 is 7 bytes.
 ```
 
-`slice` is 6 characters in length and 6 bytes, but `slice2` is 3 characters in length and 7 bytes.
+`slice` の文字列は 6 文字でサイズは 6 バイトですが、`slice2` の文字列は 3 文字でサイズ 7 バイトとなります。
 
-If `.len()` gives the size in bytes, what about the size in characters? We will learn about these methods later, but you can just remember that `.chars().count()` will do it. `.chars().count()` turns what you wrote into characters and then counts how many there are.
-
+メソッドの `.len()` がバイト単位でサイズを返す場合、文字単位のサイズはどうすれば得られるかわかりますか？
+これらのメソッドについてはあとで学習する予定ですが、ここで覚えておいてほしいことは `.chars().count()` が文字単位でのサイズを返してくれるということです。
+この `.chars().count()` に渡した文字列を複数の文字に分解してから、その数をカウントします。
 
 ```rust
 fn main() {
@@ -446,24 +447,29 @@ fn main() {
 }
 ```
 
-This prints:
+この結果は：
 
 ```text
 Slice is 6 bytes and also 6 characters.
 Slice2 is 7 bytes but only 3 characters.
 ```
 
-## Type inference
-**[See this chapter on YouTube](https://youtu.be/q1D2vpy3kEI)**
+## 型の推論
+**[この章の YouTube を観る](https://youtu.be/q1D2vpy3kEI)**
 
-Type inference means that if you don't tell the compiler the type, but it can decide by itself, it will decide. The compiler always needs to know the type of the variables, but you don’t always need to tell it. Actually, usually you don't need to tell it. For example, for `let my_number = 8`, `my_number` will be an `i32`. That is because the compiler chooses i32 for integers if you don't tell it. But if you say `let my_number: u8 = 8`, it will make `my_number` a `u8`, because you told it `u8`.
+型の推論とは、コンパイラにどんな型であるかを伝えていなくても、可能であればコンパイラが自分で型を決定できるという機能です。
+すなわちコンパイラは常に変数の型を知っておく必要がありますが、必ずしもプログラムから伝える必要は無いということです。
+実際のところ、通常はコンパイラに伝えません。
+たとえば `let my_number = 8` と書くと `my_number` の型は自動的に `i32` になります。
+これは、コンパイラが（プログラムから伝えられなかった変数の）型を推論した結果、`i32` という整数型を選択したからです。
+その一方で `let my_number: u8 = 8` と書いた場合は、プログラムからコンパイラに `u8` であると伝えたので、`my_number` の型は `u8` になります。
 
-So usually the compiler can guess. But sometimes you need to tell it, for two reasons:
+したがって、通常はコンパイラに型を推論してもらい、次の二つのケースでは明示的にコンパイラに伝えるようにして下さい：
 
-1) You are doing something very complex and the compiler doesn't know the type you want.
-2) You want a different type (for example, you want an `i128`, not an `i32`).
+1) とても複雑なことをしていて、コンパイラがあなたの望む型を知ることができない場合
+2) コンパイラが推論する型とは別の型にしたい場合（たとえば、同じ整数であっても `i32` ではなく `i128` 型にしたい場合）
 
-To specify a type, add a colon after the variable name.
+プログラムからコンパイラに型を伝えたい場合、変数名のうしろにコロン `:` を追加して型を指定します。
 
 ```rust
 fn main() {
@@ -471,11 +477,12 @@ fn main() {
 }
 ```
 
-For numbers, you can say the type after the number. You don't need a space - just type it right after the number.
+変数に代入するのが数値の場合、代入する数値の後ろに型を追加してコンパイラに伝えることができます。
+空白は不要です ー 数値に続いてそのまま型名を書きます。
 
 ```rust
 fn main() {
-    let small_number = 10u8; // 10u8 = 10 of type u8
+    let small_number = 10u8; // 10u8 = u8 型の 10
 }
 ```
 
