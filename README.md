@@ -283,7 +283,7 @@ Rust には **基本型（primitive types）**（*primitive* = 「かなり基�
 符号ありの整数には： `i8`, `i16`, `i32`, `i64`, `i128`, そして `isize `といった型があります。
 符号なしの整数には： `u8`, `u16`, `u32`, `u64`, `u128`, そして `usize` といった型があります。
 
-これらの型で i や u の後ろについている数字は、その型のサイズ（ビット数）を表しており、数字が大きいほどサイズが大きくなります。
+これらの型で `i` や `u` の後ろに付いている数字は、その型のサイズ（ビット数）を表しており、数字が大きいほどサイズが大きくなります。
 すなわち 8ビット = 1バイト長なので `i8` は1バイト長、`i64` は 8バイト長（以下、同様）になります。
 サイズが大きな型はより大きな数値を格納できます。
 例えば、`u8` 型は最大で 255 までの数値を格納できますが、`u16` 型はさらに 65535 までの数値を格納できます。
@@ -379,12 +379,12 @@ fn main() {
 - たまにたくさんのアイテムにインデックスを付ける必要があるので大きな数値にすべきであるが、
 - 32-ビットのコンピュータでは `u64` 型は使えないので `u64` 型にすることはできない
 
-そのため Rust では `useize` 型を使って、お使いのコンピュータが読み取ることができるインデックスの最大値を取得できるようになっています。
+そのため Rust では `usize` 型を使って、お使いのコンピュータが読み取ることができるインデックスの最大値を取得できるようになっています。
 
 それでは `char` 型についてもっと見ていくことにします。
 ここまで `char` 型は常に一つの文字であることを見てきました。そして `""` の代わりに `''` を使うことも。
 
-あらゆる種類の文字を保持するには 4バイトあれば十分なので、すべての `chars` 型はメモリを 4バイトを使用します：
+あらゆる種類の文字を保持するには 4バイトあれば十分なので、すべての `char` 型はメモリを 4バイトを使用します：
 
 - 基本的な文字と記号は通常、4バイトのうち1バイトだけ使用します：例えば `a b 1 2 + - = $ @`
 - ドイツ語のウムラウトやアクセントのような文字 4バイトのうち 2バイトだけ使用します： 例えば `ä ö ü ß è é à ñ`
@@ -459,7 +459,7 @@ Slice2 is 7 bytes but only 3 characters.
 
 型の推論とは、コンパイラにどんな型であるかを伝えていなくても、可能であればコンパイラが自分で型を決定できるという機能です。
 すなわちコンパイラは常に変数の型を知っておく必要がありますが、必ずしもプログラムから伝える必要は無いということです。
-実際のところ、通常はコンパイラに伝えません。
+実際のところ、通常はコンパイラには伝えません。
 たとえば `let my_number = 8` と書くと `my_number` の型は自動的に `i32` になります。
 これは、コンパイラが（プログラムから伝えられなかった変数の）型を推論した結果、`i32` という整数型を選択したからです。
 その一方で `let my_number: u8 = 8` と書いた場合は、プログラムからコンパイラに `u8` であると伝えたので、`my_number` の型は `u8` になります。
@@ -477,7 +477,7 @@ fn main() {
 }
 ```
 
-変数に代入するのが数値の場合、代入する数値の後ろに型を追加してコンパイラに伝えることができます。
+変数に代入するのが数値の場合、代入する数値の後ろに型を追記してコンパイラに伝えることができます。
 空白は不要です ー 数値に続いてそのまま型名を書きます。
 
 ```rust
@@ -485,17 +485,18 @@ fn main() {
     let small_number = 10u8; // 10u8 = u8 型の 10
 }
 ```
+必要であれば数値を読みやすくするめにアンダースコア `_` を追記できます。
 
-You can also add `_` if you want to make the number easy to read.
 
 ```rust
 fn main() {
-    let small_number = 10_u8; // This is easier to read
-    let big_number = 100_000_000_i32; // 100 million is easy to read with _
+    let small_number = 10_u8; // これで少し読みやすくなった
+    let big_number = 100_000_000_i32; // 100 億という数値が _ で読みやすくなった
 }
 ```
 
-The `_` does not change the number. It is only to make it easy for you to read. And it doesn't matter how many `_` you use:
+ここで追記したアンダースコア `_` は数値を変更しません。ただ読みやすくするためのものです。
+また、そこで追記したアンダースコア`_` の数は影響しません。
 
 ```rust
 fn main() {
@@ -505,32 +506,38 @@ fn main() {
 }
 ```
 
-This prints `0, 1624`.
+この結果は： `0, 1624`
 
-### Floats
+### 浮動小数点型数値
 
-Floats are numbers with decimal points. 5.5 is a float, and 6 is an integer. 5.0 is also a float, and even 5. is a float.
+浮動小数点型数値とは小数点付きの数値のことです。
+5.5 は浮動小数点型数値ですが、6 は整数です。
+5.0 も不動小数点型数値で、5. も不動小数点型数値です。
 
 ```rust
 fn main() {
-    let my_float = 5.; // Rust sees . and knows that it is a float
+    let my_float = 5.; // Rust は . を見て、これが浮動小数点型であると認識する
 }
 ```
 
-But the types are not called `float`, they are called `f32` and `f64`. It is the same as integers: the number after `f` shows the number of bits. If you don't write the type, Rust will choose `f64`.
+しかし型名は `float` ではなく、`f32` 型と `f64` 型です。
+先に説明した整数型と同じです：
+`f` の後ろに付いている数字はビット数を表します。
+型を明記しない場合、Rust は `f64` 型を選択します。
 
-Of course, only floats of the same type can be used together. So you can't add an `f32` to an `f64`.
+もちろん、同じ型の浮動小数点型数値だけ一緒に使用できます。
+そのため `f32` 型の数値と `f64` 型の数値の加算はできません。
 
 ```rust
 fn main() {
-    let my_float: f64 = 5.0; // This is an f64
-    let my_other_float: f32 = 8.5; // This is an f32
+    let my_float: f64 = 5.0; // これは f64 型
+    let my_other_float: f32 = 8.5; // これは f32 型
 
     let third_float = my_float + my_other_float; // ⚠️
 }
 ```
 
-When you try to run this, Rust will say:
+上のコードを動かすと、Rust から怒られます：
 
 ```text
 error[E0308]: mismatched types
@@ -540,27 +547,29 @@ error[E0308]: mismatched types
   |                                  ^^^^^^^^^^^^^^ expected `f64`, found `f32`
 ```
 
-The compiler writes "expected (type), found (type)" when you use the wrong type. It reads your code like this:
+型の指定を間違えると、コンパイラは "expected 型名, found 型名" と出力します。
+Rust は次にようにコードを解釈します：
 
 ```rust
 fn main() {
-    let my_float: f64 = 5.0; // The compiler sees an f64
-    let my_other_float: f32 = 8.5; // The compiler sees an f32. It is a different type.
-    let third_float = my_float + // You want to add my_float to something, so it must be an f64 plus another f64. Now it expects an f64...
-    let third_float = my_float + my_other_float;  // ⚠️ but it found an f32. It can't add them.
+    let my_float: f64 = 5.0; // コンパイラは f64 型と認識する
+    let my_other_float: f32 = 8.5; // コンパイラは f32 型と認識する（これは上とは異なる型）
+    let third_float = my_float + // ここで my_float と何かを加算したいので、f64 型の数値と f64 型の別の数値である必要があるので、f64 型であることを期待する...
+    let third_float = my_float + my_other_float;  // ⚠️  しかし見つかったのは f32型である（この二つの数値は加算できない）
 }
 ```
 
-So when you see "expected (type), found (type)", you must find why the compiler expected a different type.
+したがって "expected 型名, found 型名" が表示されたら、コンパイラが異なる型を期待した理由を見つける必要があります。
 
-Of course, with simple numbers it is easy to fix. You can cast the `f32` to an `f64` with `as`:
+もちろん単純な数値を使えば簡単に修正できます。
+`as` を使って`f32` 型から `f64` 型にキャストできます：
 
 ```rust
 fn main() {
     let my_float: f64 = 5.0;
     let my_other_float: f32 = 8.5;
 
-    let third_float = my_float + my_other_float as f64; // my_other_float as f64 = use my_other_float like an f64
+    let third_float = my_float + my_other_float as f64; // "my_other_float as f64" は my_other_float を f64 型のように使うと言う意味
 }
 ```
 
