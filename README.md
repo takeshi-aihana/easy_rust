@@ -315,10 +315,10 @@ fn main() {
 }
 ```
 
-一般的に使われる単語の文字数は 256 未満であり、`u8` 型に収まります。
-ここで忘れていはいけないことは、`u8` 型に収まるのは 0 と 255 までのすべての数値で、合計 256 個だと言うことです。
-これは、Rust ではキーワードの `as` を使って安全に `u8`型のデータを `char` 型に**キャスト**（型変換）できることを意味します
-（「`u8` 型を `char` 型としてキャストする」" とは「`u8` 型が `char` 型のふりをする」ことを意味します）。
+一般的に使われる単語の文字数は 256 未満であり、`u8` に収まります。
+ここで忘れていはいけないことは、`u8` に収まるのは 0 と 255 までのすべての数値で、合計 256 個だと言うことです。
+これは、Rust ではキーワードの `as` を使って安全に `u8`のデータを `char` に**キャスト**（型変換）できることを意味します
+（「型の `u8` を型の `char` としてキャストする」" とは「型の `u8` が `char` 型のふりをする」ことを意味します）。
 
 Rust の言語仕様はとても厳格なので、キーワードの `as` を使ってキャストするのが便利です。
 常に型を知る必要があり、そして例え両方が同じ整数であったとしても二つの異なる型を一緒に使用することはできません。
@@ -347,9 +347,9 @@ error[E0604]: only `u8` can be cast as `char`, not `i32`
 ```
 
 幸いにも、この問題はキーワードの `as` を使って簡単に修正できます。
-`i32` 型をそのまま `char` 型にキャストすることはできませんが、`i32` 型を `u8` 型にキャストすることは可能です。
+型の `i32` をそのまま `char` にキャストすることはできませんが、`i32` を `u8` にキャストすることは可能です。
 そして同様に `u8` 型から `char` 型のキャストも可能です。
-したがって、まず `as` を使って `my_number` を `u8` 型にキャストし、再び `as` を使って `char` 型にキャストします。
+したがって、まず `as` を使って `my_number` を `u8` にキャストし、再び `as` を使って `char` にキャストします。
 これでコンパイルが成功します：
 
 ```rust
@@ -361,7 +361,7 @@ fn main() {
 
 これは、100 を文字（`char` 型）で出力するので `d` となります。
 
-しかしながら、もっと簡単な方法は `my_number` が `u8` 型であることを Rust に伝えておくことです。
+しかしながら、もっと簡単な方法は `my_number` が `u8` であることを Rust に伝えておくことです。
 次のように書きます：
 
 ```rust
@@ -464,10 +464,10 @@ Slice2 is 7 bytes but only 3 characters.
 これは、コンパイラが（プログラムから伝えられなかった変数の）型を推論した結果、`i32` という整数型を選択したからです。
 その一方で `let my_number: u8 = 8` と書いた場合は、プログラムからコンパイラに `u8` であると伝えたので、`my_number` の型は `u8` になります。
 
-したがって、通常はコンパイラに型を推論してもらい、次の二つのケースでは明示的にコンパイラに伝えるようにして下さい：
+したがって、通常はコンパイラに型を推論してもらい、次のようなケースに該当する場合は明示的にコンパイラに伝えるようにして下さい：
 
 1) とても複雑なことをしていて、コンパイラがあなたの望む型を知ることができない場合
-2) コンパイラが推論する型とは別の型にしたい場合（たとえば、同じ整数であっても `i32` ではなく `i128` 型にしたい場合）
+2) コンパイラが推論する型とは別の型にしたい場合（たとえば、同じ整数であっても `i32` ではなく `i128` にしたい場合）
 
 プログラムからコンパイラに型を伝えたい場合、変数名のうしろにコロン `:` を追加して型を指定します。
 
@@ -520,13 +520,13 @@ fn main() {
 }
 ```
 
-しかし型名は `float` ではなく、`f32` 型と `f64` 型です。
+しかし型名は `float` ではなく、`f32` と `f64` です。
 先に説明した整数型と同じです：
 `f` の後ろに付いている数字はビット数を表します。
-型を明記しない場合、Rust は `f64` 型を選択します。
+型を明記しない場合、Rust は `f64` を選択します。
 
 もちろん、同じ型の浮動小数点型数値だけ一緒に使用できます。
-そのため `f32` 型の数値と `f64` 型の数値の加算はできません。
+そのため型が `f32` の数値と型が `f64` の数値は加算できません。
 
 ```rust
 fn main() {
@@ -537,7 +537,7 @@ fn main() {
 }
 ```
 
-上のコードを動かすと、Rust から怒られます：
+上のコードを動かすと Rust から怒られます：
 
 ```text
 error[E0308]: mismatched types
@@ -552,53 +552,55 @@ Rust は次にようにコードを解釈します：
 
 ```rust
 fn main() {
-    let my_float: f64 = 5.0; // コンパイラは f64 型と認識する
-    let my_other_float: f32 = 8.5; // コンパイラは f32 型と認識する（これは上とは異なる型）
-    let third_float = my_float + // ここで my_float と何かを加算したいので、f64 型の数値と f64 型の別の数値である必要があるので、f64 型であることを期待する...
-    let third_float = my_float + my_other_float;  // ⚠️  しかし見つかったのは f32型である（この二つの数値は加算できない）
+    let my_float: f64 = 5.0; // コンパイラは型を f64 と認識する
+    let my_other_float: f32 = 8.5; // コンパイラは型を f32 と認識する（これは上とは異なる型）
+    let third_float = my_float + // ここで my_float と何かを加算したいので、型が f64 の数値と同じ型の別の数値である必要があるので、型が f64 であることを期待するが...
+    let third_float = my_float + my_other_float;  // ⚠️  しかし見つかったのは f32 の型であった（この二つの数値は加算できない）
 }
 ```
 
-したがって "expected 型名, found 型名" が表示されたら、コンパイラが異なる型を期待した理由を見つける必要があります。
+したがって "expected 型名, found 型名" が表示されたら、コンパイラが別の型を期待した理由を見つける必要があります。
 
 もちろん単純な数値を使えば簡単に修正できます。
-`as` を使って`f32` 型から `f64` 型にキャストできます：
+`as` を使って型を `f32` から `f64` にキャストできます：
 
 ```rust
 fn main() {
     let my_float: f64 = 5.0;
     let my_other_float: f32 = 8.5;
 
-    let third_float = my_float + my_other_float as f64; // "my_other_float as f64" は my_other_float を f64 型のように使うと言う意味
+    let third_float = my_float + my_other_float as f64; // "my_other_float as f64" は my_other_float を f64 型として扱うと言う意味
 }
 ```
 
-Or even more simply, remove the type declarations. ("to declare a type" = "to tell Rust to use the type") Rust will choose types that can add together.
+あるいは、もっと簡単に、型の宣言を取り去りってしまいます（ちなみに「型を定義する」とは「使用する型を Rust に伝える」という意味）。
+すると Rust は一緒に追加できる型を選択します。
+
 
 ```rust
 fn main() {
-    let my_float = 5.0; // Rust will choose f64
-    let my_other_float = 8.5; // Here again it will choose f64
+    let my_float = 5.0; // Rust は型に f64 を選択する
+    let my_other_float = 8.5; // ここで再び f64 を選択する
 
     let third_float = my_float + my_other_float;
 }
 ```
 
-The Rust compiler is smart and will not choose f64 if you need f32:
+Rust のコンパイラは賢いので、型として `f32` が必要な時に `f64` を選択することはありません： 
 
 ```rust
 fn main() {
     let my_float: f32 = 5.0;
-    let my_other_float = 8.5; // Usually Rust would choose f64,
+    let my_other_float = 8.5; // この文だけなら型として Rust は f64 を選択するかもしれないが、
 
-    let third_float = my_float + my_other_float; // but now it knows that you need to add it to an f32. So it chooses f32 for my_other_float too
+    let third_float = my_float + my_other_float; // この文で f32 にすべきであると認識するので、上の変数 my_other_float の型も f32 を選択する
 }
 ```
 
-## Printing 'hello, world!'
-**See this chapter on YouTube: [Video 1](https://youtu.be/yYlPHRl2geQ), [Video 2](https://youtu.be/DTCSfBJJZb8)**
+## 'hello, world!' を出力する
+**この章の YouTube を観る: [動画１](https://youtu.be/yYlPHRl2geQ), [動画２](https://youtu.be/DTCSfBJJZb8)**
 
-When you start a new Rust program, it always has this code:
+新しい Rust のプログラムを書く時はいつも、このようなコードから始まります：
 
 ```rust
 fn main() {
@@ -606,15 +608,21 @@ fn main() {
 }
 ```
 
-- `fn` means function,
-- `main` is the function that starts the program,
-- `()` means that we didn't give the function any variables to start.
+- `fn` は関数であることを意味します
+- `main` はプログラムを開始する専用の関数です
+- `()` は関数に変数を何も渡すことなくプログラムを開始したことを意味します
 
-`{}` is called a **code block**. This is the space where code lives.
+`{}` を**コード・ブロック**と呼びます。
+この中にコードを書きます。
 
-`println!` is a **macro** that prints to the console. A **macro** is like a function that writes code for you. Macros have a `!` after them. We will learn about making macros later. For now, remember that `!` means that it is a macro.
+`println!` は**マクロ**の一つで、端末に出力します。
+マクロは、あなたのためにコードを書いてくれる関数のようなものです。
+マクロには名前の後ろに `!` が付きます。
+マクロの書き方についてはあとで学ぶ予定です。
+ここで覚えてほしいことは、`!` が付いた関数はマクロであるということです。
 
-To learn about the `;`, we will create another function. First, in `main` we will print a number 8:
+セミコロン `;` について知る前にもう一つ別の関数を作成します。
+まず `main` の中で数字の 8 を出力してみます:
 
 ```rust
 fn main() {
@@ -622,10 +630,11 @@ fn main() {
 }
 ```
 
-The `{}` in `println!` means "put the variable inside here". This prints `Hello, world number 8!`.
+`println!` の中にある `{}` は「この場所に変数（の中身）を入れる」という意味です。
+したがって、このコードの出力は `Hello, world number 8!` です。
 
+さらに追加することができます：
 
-We can put more in, just like we did before:
 
 ```rust
 fn main() {
@@ -633,9 +642,9 @@ fn main() {
 }
 ```
 
-This prints `Hello, worlds number 8 and 9!`.
+この出力は `Hello, worlds number 8 and 9!` です。
 
-Now let's create the function.
+それでは関数を追加してみましょう：
 
 ```rust
 fn number() -> i32 {
@@ -647,10 +656,12 @@ fn main() {
 }
 ```
 
-This also prints `Hello, world number 8!`. When Rust looks at `number()` it sees a function. This function:
+この出力も `Hello, world number 8!` です。
+Rust が `number()` を見つけると、関数を見に行きます。
+この関数は：
 
-- Does not take anything (because it has `()`)
-- Returns an `i32`. The `->` (called a "skinny arrow") shows what the function returns.
+- 引数を何も受け取らない (関数が `()` なので)
+- 型が`i32` の数値を返す。記号 `->`（「スキニイ・アロー（細い矢印）」と呼びます）は、この関数が何を返すのかを示しています。
 
 Inside the function is just `8`. Because there is no `;`, this is the value it returns. If it had a `;`, it would not return anything (it would return a `()`). Rust will not compile this if it has a `;`, because the return is `i32` and `;` returns `()`, not `i32`:
 
