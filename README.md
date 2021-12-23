@@ -657,13 +657,17 @@ fn main() {
 ```
 
 この出力も `Hello, world number 8!` です。
-Rust が `number()` を見つけると、関数を見に行きます。
+Rust が `number()` を見つけると関数の一つであることを認識します。
 この関数は：
 
-- 引数を何も受け取らない (関数が `()` なので)
-- 型が`i32` の数値を返す。記号 `->`（「スキニイ・アロー（細い矢印）」と呼びます）は、この関数が何を返すのかを示しています。
+- 引数を何も受け取らない (関数に `()` が付いているので)
+- 型が`i32` の数値を返す。記号 `->`（「スキニイ・アロー（細い矢印）」と呼びます）は、この関数が何を返すのかを示します。
 
-Inside the function is just `8`. Because there is no `;`, this is the value it returns. If it had a `;`, it would not return anything (it would return a `()`). Rust will not compile this if it has a `;`, because the return is `i32` and `;` returns `()`, not `i32`:
+関数の中身にはただ数字の `8` が書かれているだけです。
+さらにセミコロンの `;` が無いので、この値は関数の返り値になります。
+もし `;` が付いていたら何も返されません（実際には `()` を返します）。
+次に示すように、もし `;` が付いていたら Rust はこのセミコロンをコンパイルしません。
+なぜなら返り値が整数の `i32` であり、セミコロンの `;` は `i32` ではなく `()` を返すからです：
 
 ```rust
 fn main() {
@@ -684,43 +688,46 @@ fn number() -> i32 {
   |      - help: consider removing this semicolon
 ```
 
-This means "you told me that `number()` returns an `i32`, but you added a `;` so it doesn't return anything". So the compiler suggests removing the semicolon.
+これは、「関数の `number()` は整数の `i32` を返すこととコンパイラに伝えたのにもかかわらず、関数の最後に（`return` をおかず）`;` を追加してしまっているので何も返しません」と言う意味です。
+そのため Rust のコンパイラは最後にそのセミコロンを削除すること提案しています。
 
-You can also write `return 8;` but in Rust it is normal to just remove the `;` to `return`.
+また、そこに `return 8;` にすることも可能ですが、Rust ではただ `;` を削除するのが普通です。
 
-When you want to give variables to a function, put them inside the `()`. You have to give them a name and write the type.
+関数に変数をいくつか渡したい時は、それらを `()` の中に書きます。
+その際は変数の名前と型を指定して下さい。
 
 ```rust
-fn multiply(number_one: i32, number_two: i32) { // Two i32s will enter the function. We will call them number_one and number_two.
+fn multiply(number_one: i32, number_two: i32) { // 二つの整数 i32 が関数に渡される（そして関数の中で number_one と number_two を呼び出す）
     let result = number_one * number_two;
     println!("{} times {} is {}", number_one, number_two, result);
 }
 
 fn main() {
-    multiply(8, 9); // We can give the numbers directly
-    let some_number = 10; // Or we can declare two variables
+    multiply(8, 9); // 数値を直接、関数に渡すことができる
+    let some_number = 10; // あるいは、二つの変数をそれぞれ宣言し
     let some_other_number = 2;
-    multiply(some_number, some_other_number); // and put them in the function
+    multiply(some_number, some_other_number); // それらを関数に渡すことができる
 }
 ```
 
-We can also return an `i32`. Just take out the semicolon at the end:
+また、この例では `i32` として値を返すこともできます。
+最後にあるセミコロン `;` を削除するだけです：
 
 ```rust
 fn multiply(number_one: i32, number_two: i32) -> i32 {
     let result = number_one * number_two;
     println!("{} times {} is {}", number_one, number_two, result);
-    result // this is the i32 that we return
+    result // これは i32 （これが返り値）
 }
 
 fn main() {
-    let multiply_result = multiply(8, 9); // We used multiply() to print and to give the result to multiply_result
+    let multiply_result = multiply(8, 9); // multiply() を使って結果を出力し、関数から result を multiply_result に返す
 }
 ```
 
-### Declaring variables and code blocks
+### 変数の宣言とコード・ブロック
 
-Use `let` to declare a variable (declare a variable = tell Rust to make a variable).
+キーワードの `let` を使って変数を宣言します（ちなみに「変数を宣言する」とは「Rust に変数を作成するように指示する」という意味）。
 
 ```rust
 fn main() {
@@ -729,17 +736,18 @@ fn main() {
 }
 ```
 
-Variables start and end inside a code block `{}`. In this example, `my_number` ends before we call `println!`, because it is inside its own code block.
+変数は任意のコード・ブロック `{}` の中で「始まって終わります」。
+次の例で変数 `my_number` は、この変数が専用のコード・ブロックの中にあるため、関数の `println!` を呼び出す前にそのライフタイムが終わっています。
 
 ```rust
 fn main() {
     {
-        let my_number = 8; // my_number starts here
-                           // my_number ends here!
+        let my_number = 8; // my_number の始まりはここ
+                           // my_number の終わりはここ！
     }
 
-    println!("Hello, number {}", my_number); // ⚠️ there is no my_number and
-                                             // println!() can't find it
+    println!("Hello, number {}", my_number); // ⚠️  変数の my_number は存在しておらず
+                                             // マクロの println!() では参照できない！
 }
 ```
 
