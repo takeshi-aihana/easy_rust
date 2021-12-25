@@ -47,13 +47,13 @@ Rust は理解するために立ち止まって考えなければならないプ
 
 - [第一部 ブラウザ上で Rust を動かす](#第一部---ブラウザ上で-rust-を動かす)
   - ["Rust Playground" について](#rust-playground-について)
-  - [🚧 と ⚠️  のアイコン] (#-と-️のアイコンについて)
+  - [🚧 と ⚠️  のアイコン] (-と-%EF%B8%8F--のアイコン)
   - [コメントの書き方](#コメントの書き方)
   - [いろいろな型](#いろいろな型)
-    - [基本型（Primitive type）](#primitive-types)
-  - [Type inference](#type-inference)
-    - [Floats](#floats)
-  - [Printing 'hello, world!'](#printing-hello-world)
+    - [基本型](#基本型primitive-type)
+  - [型の推論e](#型の推論)
+    - [Floats](#浮動小数点型数値)
+  - [Printing 'hello, world!'](#hello-world-を出力する)
     - [Declaring variables and code blocks](#declaring-variables-and-code-blocks)
   - [Display and debug](#display-and-debug)
     - [Smallest and largest numbers](#smallest-and-largest-numbers)
@@ -266,7 +266,7 @@ fn main() {
 Rust には数字や文字などを操作できる型がいろいろあります。
 単純な型もあれば複雑な型もあり、独自の型を作成することも可能です。
 
-### 基本型（Primitive type）
+### 基本型
 **[この章の YouTube を観る](https://youtu.be/OxTPU5UGMhs)**
 
 Rust には **基本型（primitive types）**（*primitive* = 「かなり基本的な」という意） と呼ばれる単純な型があります。
