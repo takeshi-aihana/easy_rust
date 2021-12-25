@@ -478,7 +478,7 @@ fn main() {
 ```
 
 変数に代入するのが数値の場合、代入する数値の後ろに型を追記してコンパイラに伝えることができます。
-空白は不要です ー 数値に続いてそのまま型名を書きます。
+空白は不要です ー 数値に続いてそのまま型を書きます。
 
 ```rust
 fn main() {
@@ -520,7 +520,7 @@ fn main() {
 }
 ```
 
-しかし型名は `float` ではなく、`f32` と `f64` です。
+しかし型は `float` ではなく、`f32` と `f64` です。
 先に説明した整数型と同じです：
 `f` の後ろに付いている数字はビット数を表します。
 型を明記しない場合、Rust は `f64` を選択します。
@@ -573,7 +573,7 @@ fn main() {
 }
 ```
 
-あるいは、もっと簡単に、型の宣言を取り去りってしまいます（ちなみに「型を定義する」とは「使用する型を Rust に伝える」という意味）。
+あるいは、もっと簡単に型の宣言を取り去ってしまいます（ちなみに「型を定義する」とは「使用する型を Rust に伝える」という意味）。
 すると Rust は一緒に追加できる型を選択します。
 
 
@@ -617,11 +617,11 @@ fn main() {
 
 `println!` は**マクロ**の一つで、端末に出力します。
 マクロは、あなたのためにコードを書いてくれる関数のようなものです。
-マクロには名前の後ろに `!` が付きます。
+マクロは名前の後ろに `!` が付きます。
 マクロの書き方についてはあとで学ぶ予定です。
 ここで覚えてほしいことは、`!` が付いた関数はマクロであるということです。
 
-セミコロン `;` について知る前にもう一つ別の関数を作成します。
+セミコロン `;` について説明する前に、もう一つ別の関数を作成することにします。
 まず `main` の中で数字の 8 を出力してみます:
 
 ```rust
@@ -644,7 +644,7 @@ fn main() {
 
 この出力は `Hello, worlds number 8 and 9!` です。
 
-それでは関数を追加してみましょう：
+それでは別の関数を追加してみましょう：
 
 ```rust
 fn number() -> i32 {
@@ -656,18 +656,18 @@ fn main() {
 }
 ```
 
-この出力も `Hello, world number 8!` です。
+このコードの出力も `Hello, world number 8!` です。
 Rust が `number()` を見つけると関数の一つであることを認識します。
 この関数は：
 
 - 引数を何も受け取らない (関数に `()` が付いているので)
-- 型が`i32` の数値を返す。記号 `->`（「スキニイ・アロー（細い矢印）」と呼びます）は、この関数が何を返すのかを示します。
+- 型が`i32` の整数を返す。記号 `->`（「スキニイ・アロー（細い矢印）」と呼びます）は、この関数が何を返すのかを示します。
 
 関数の中身にはただ数字の `8` が書かれているだけです。
-さらにセミコロンの `;` が無いので、この値は関数の返り値になります。
+さらにセミコロンの `;` が無いので、この値が関数の返り値になります。
 もし `;` が付いていたら何も返されません（実際には `()` を返します）。
 次に示すように、もし `;` が付いていたら Rust はこのセミコロンをコンパイルしません。
-なぜなら返り値が整数の `i32` であり、セミコロンの `;` は `i32` ではなく `()` を返すからです：
+なぜなら返り値が整数の `i32` なのに、セミコロンの `;` は `i32` ではなく `()` を返すからです：
 
 ```rust
 fn main() {
@@ -691,7 +691,7 @@ fn number() -> i32 {
 これは、「関数の `number()` は整数の `i32` を返すこととコンパイラに伝えたのにもかかわらず、関数の最後に（`return` をおかず）`;` を追加してしまっているので何も返しません」と言う意味です。
 そのため Rust のコンパイラは最後にそのセミコロンを削除すること提案しています。
 
-また、そこに `return 8;` にすることも可能ですが、Rust ではただ `;` を削除するのが普通です。
+また、そこを `return 8;` に変更することも可能ですが、Rust ではただ `;` を削除するのが普通です。
 
 関数に変数をいくつか渡したい時は、それらを `()` の中に書きます。
 その際は変数の名前と型を指定して下さい。
@@ -751,43 +751,49 @@ fn main() {
 }
 ```
 
-You can use a code block to return a value:
+値を返す時にコード・ブロックを利用することができます：
 
 ```rust
 fn main() {
     let my_number = {
     let second_number = 8;
-        second_number + 9 // No semicolon, so the code block returns 8 + 9.
-                          // It works just like a function
+        second_number + 9 // セミコロンが無いので、コードブロックは 8 + 9 を返す
+                          // （まるで関数であるかのように動く）
     };
 
     println!("My number is: {}", my_number);
 }
 ```
 
-If you add a semicolon inside the block, it will return `()` (nothing):
+もしコード・ブロックの最後にセミコロンを追加したら、コード・ブロックは空の `()` を返します（すなわち、実際には何も返しません。普通のコード・ブロックです。）。
 
 ```rust
 fn main() {
     let my_number = {
-    let second_number = 8; // declare second_number,
-        second_number + 9; // add 9 to second_number
-                           // but we didn't return it!
-                           // second_number dies now
+    let second_number = 8; // second_number を宣言し
+        second_number + 9; // second_number に 9 を加算する
+                           // しかし、その結果は返さない！
+                           // second_number はここで終了
     };
 
-    println!("My number is: {:?}", my_number); // my_number is ()
+    println!("My number is: {:?}", my_number); // my_number は () （空）
 }
 ```
 
-So why did we write `{:?}` and not `{}`? We will talk about that now.
+ここで `{}` ではなく `{:?}` と書いたのでしょう？
+それについては、これから説明します。
 
-## Display and debug
-**[See this chapter on YouTube](https://youtu.be/jd3pC248c0o)**
+## 通常の出力とデバッグ出力
+**[この章の YouTube を観る](https://youtu.be/jd3pC248c0o)**
 
-Simple variables in Rust can be printed with `{}` inside `println!`. But some variables can't, and you need to **debug print**. Debug print is printing for the programmer, because it usually shows more information. Debug sometimes doesn't look pretty, because it has extra information to help you.
+Rust では単純な変数ならマクロの `println!` の中で `{}` を使えば、その中身を出力できます。
+ただし変数の中にはそれができないものがあり、**デバッグ出力する**必要がでてきます。
+デバッグ出力は、通常たくさんの情報を表示することになるのでプログラマ向けの出力になります。
+デバッグ出力には役立つ追加情報が含まれているので、出力するものの見栄えがよくない場合があります。
 
-How do you know if you need `{:?}` and not `{}`? The compiler will tell you. For example:
+話を戻して、`{}` ではなく `{:?}` と書く理由は何でしょうか？
+それはコンパイラが教えてくれます。
+たとえば：
 
 ```rust
 fn main() {
@@ -796,7 +802,7 @@ fn main() {
 }
 ```
 
-When we run this, the compiler says:
+このコードをコンパイルすると、コンパイラから怒られます:
 
 ```text
 error[E0277]: `()` doesn't implement `std::fmt::Display`
@@ -811,11 +817,17 @@ error[E0277]: `()` doesn't implement `std::fmt::Display`
   = note: this error originates in a macro (in Nightly builds, run with -Z macro-backtrace for more info)
 ```
 
-This is a lot of information. But the important part is: `you may be able to use {:?} (or {:#?} for pretty-print) instead`. This means that you can try `{:?}`, and also `{:#?}` `{:#?}` is called "pretty printing". It is like `{:?}` but prints with different formatting over more lines.
+いきなりたくさんの情報が出てきました。
+ただし重要な点は：
+`you may be able to use {:?} (or {:#?} for pretty-print) instead` の箇所です。
+これは、`{:?}` または `{:#?}` の利用してみてはどうかという意味です。
+`{:#?}` はいわゆる「きれいに整形した出力（pretty printing）」と呼ばれているものです。
+`{:?}` と似ていますが、複数行にわたって別の書式で出力してくれます。
 
-So Display means printing with `{}`, and Debug means printing with `{:?}`.
+「通常の出力」では `{}`を使い、「デバッグ出力」 では `{:?}` を使う点が違います。
 
-One more thing: you can also use `print!` without `ln` if you don't want a new line.
+一点補足すると：
+改行したくない場合は、`ln` が付かない別のマクロ `print!`が使えます。
 
 ```rust
 fn main() {
@@ -824,7 +836,7 @@ fn main() {
 }
 ```
 
-This prints `This will not print a new line so this will be on the same line`.
+このコードの出力は `This will not print a new line so this will be on the same line` になります。
 
 ### Smallest and largest numbers
 
