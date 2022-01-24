@@ -1,3 +1,6 @@
+<!--
+$Lastupdate: 2022/01/24 19:47:30 $
+-->
 ## Updates
 ![example workflow name](https://github.com/Dhghomon/easy_rust/workflows/github%20pages/badge.svg)
 
@@ -888,7 +891,8 @@ fn main() {
 ```
 
 コンパイラからの指摘は： `error[E0384]: cannot assign twice to immutable variable my_number`
-これは、`let` と書くだけで変数が変更不可（`immutable`）になるからです。
+
+これは、`let` と書くだけで変数が変更不可（*immutable*）になるからです。
 
 それでも変数を変更したい場合があるでしょう。
 変更可能な変数を宣言する場合は `let` のうしろにキーワードの `mut` を追加して下さい：
@@ -902,8 +906,7 @@ fn main() {
 
 上の例のようにするとエラーが無くなります。
 
-ただし型は変更できません：
-たとえキーワードの `mut` を置いても。
+ただし型は変更できません（たとえキーワードの `mut` を置いても）。
 次のコードは動きません：
 
 ```rust
@@ -916,44 +919,52 @@ fn main() {
 これをコンパイルすると、コンパイラからは同じ "expected" が付いたメッセージが返ってきます：
 `expected integer, found &str` （ちなみに `&str` は文字列型です。あとで説明します）
 
-aihana
-### Shadowing
-**[See this chapter on YouTube](https://youtu.be/InULHyRGw7g)**
+### シャドーイング（Shadowing）
+**[この章の YouTube を観る](https://youtu.be/InULHyRGw7g)**
 
-Shadowing means using `let` to declare a new variable with the same name as another variable. It looks like mutability, but it is completely different. Shadowing looks like this:
+**シャドーイング**（*shadowing*）とは、キーワードの `let` を使って、別の変数と同じ名前を持つ新しい変数を宣言することを言います。
+可変性（*mutability*）に似ていますが、まったくの別物です。
+シャドーイングは次のようなものです：
 
 ```rust
 fn main() {
-    let my_number = 8; // This is an i32
-    println!("{}", my_number); // prints 8
-    let my_number = 9.2; // This is an f64 with the same name. But it's not the first my_number - it is completely different!
-    println!("{}", my_number) // Prints 9.2
+    let my_number = 8; // これは i32 型
+    println!("{}", my_number); // この出力は 8
+    let my_number = 9.2; // これは同じ名前を持つ f64 型ですが、一番最初の my_number ではありません（全くの別物です！）
+    println!("{}", my_number) // この出力は 9.2
 }
 ```
 
-Here we say that we "shadowed" `my_number` with a new "let binding".
+これを、新しい「`let` のバインディング」を使って変数の `my_number` を「シャドーイングした」と言います。
 
-So is the first `my_number` destroyed? No, but when we call `my_number` we now get `my_number` the `f64`. And because they are in the same scope block (the same `{}`), we can't see the first `my_number` anymore.
+この場合、一番最初の `my_number` は破壊されるのでしょうか？
+答えは「いいえ」です。
+ただし`my_number` を参照すると、`f64` 型の `my_number` が得られます。
+そして、これら二つの変数が同じコード・ブロック（すなわち同じ `{}`）の中にあるので、もう一番最初の `my_number` を参照することはできません。
 
-But if they are in different blocks, we can see both. For example:
+しかしながら、これら二つの変数が別々のコード・ブロックにあるのであれば両方の変数を参照することは可能です。
+たとえば：
 
 ```rust
 fn main() {
-    let my_number = 8; // This is an i32
-    println!("{}", my_number); // prints 8
+    let my_number = 8; // これは i32 型
+    println!("{}", my_number); // この出力は 8
     {
-        let my_number = 9.2; // This is an f64. It is not my_number - it is completely different!
-        println!("{}", my_number) // Prints 9.2
-                                  // But the shadowed my_number only lives until here.
-                                  // The first my_number is still alive!
+        let my_number = 9.2; // これは同じ名前を持つ f64 型ですが、一番最初の my_number ではありません（全くの別物です！）
+        println!("{}", my_number) // この出力は 9.2
+                                  // しかしシャドーイングされた my_number のライフタイムは、ここまでです
+                                  // 一番最初の my_number は未だ生きています！
     }
-    println!("{}", my_number); // prints 8
+    println!("{}", my_number); // この出力は 8
 }
 ```
 
-So when you shadow a variable, you don't destroy it. You **block** it.
+すなわち、変数をシャドーイングしても、その変数が破棄されることはありません。
+その変数を**ブロック**しているのです。
 
-So what is the advantage of shadowing? Shadowing is good when you need to change a variable a lot. Imagine that you want to do a lot of simple math with a variable:
+それではシャドーイングすることのメリットは何でしょう？
+一個の変数を頻繁に変更する必要がある場合にシャドーイングが適しています。
+たとえば一個の変数を使って簡単な計算を何度も行いたいケースを想像しみて下さい：
 
 ```rust
 fn times_two(number: i32) -> i32 {
@@ -963,16 +974,16 @@ fn times_two(number: i32) -> i32 {
 fn main() {
     let final_number = {
         let y = 10;
-        let x = 9; // x starts at 9
-        let x = times_two(x); // shadow with new x: 18
-        let x = x + y; // shadow with new x: 28
-        x // return x: final_number is now the value of x
+        let x = 9; // x は 9 からスタート
+        let x = times_two(x); // 新しい x でシャドーイングする：値は 18
+        let x = x + y; // また新しい x でシャドーイングする: 値は 28
+        x // x を返す: この結果、変数 final_number はこの時点の x の値を持つ
     };
     println!("The number is now: {}", final_number)
 }
 ```
 
-Without shadowing you would have to think of different names, even though you don't care about x:
+シャドーイングを行わないと、変数の x について気にしない場合でも、別の変数名を考える必要がでてきます：
 
 ```rust
 fn times_two(number: i32) -> i32 {
@@ -980,20 +991,23 @@ fn times_two(number: i32) -> i32 {
 }
 
 fn main() {
-    // Pretending we are using Rust without shadowing
+    // シャドーイングが使えない Rust を使っているとします
     let final_number = {
         let y = 10;
-        let x = 9; // x starts at 9
-        let x_twice = times_two(x); // second name for x
-        let x_twice_and_y = x_twice + y; // third name for x!
-        x_twice_and_y // too bad we didn't have shadowing - we could have just used x
+        let x = 9; // x は 9 からスタート
+        let x_twice = times_two(x); // これが２つ目の x の変数名
+        let x_twice_and_y = x_twice + y; // これが３つ目の x の変数名！
+        x_twice_and_y // シャドーイングが使えないと変数名に悩まされます - シャドーイングがあれば x と言う変数名をそのまま使えるのです
     };
     println!("The number is now: {}", final_number)
 }
 ```
 
-In general, you see shadowing in Rust in this case. It happens where you want to quickly take variable, do something to it, and do something else again. And you usually use it for quick variables that you don't care too much about.
+Rust では、上のようなケースではシャドーイングを使うのが一般的です。
+すなわち、ある変数を受け取って何か処理を施したら、また別の処理を施すといったサイクルを素早く行いたいケースです。
+通常は、あまり気にならない一時的な作業変数（*quick variable*）にシャドーイングを使います。
 
+aihana
 ## The stack, the heap, and pointers
 
 The stack, the heap, and pointers are very important in Rust.
