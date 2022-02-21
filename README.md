@@ -1,5 +1,5 @@
 <!--
-$Lastupdate: 2022/01/24 19:47:30 $
+$Lastupdate: 2022/02/21 10:52:06 $
 -->
 ## Updates
 ![example workflow name](https://github.com/Dhghomon/easy_rust/workflows/github%20pages/badge.svg)
@@ -32,12 +32,6 @@ Rust はかなり新しい部類のプログラミング言語になりますが
 Rust は理解するために立ち止まって考えなければならないプログラミング言語なのです。
 ただし、Rust 以外のプログラミング言語を習得しているなら、その知識が Rust のコードを書くお手本になるということはよく知られていることです。
 
-## 著者について
-
-私は韓国に住むカナダ人で、ここの会社で働いているエンジニアが簡単に Rust 使い始めることができる方法をいろいろ考えながら本書を書きました。
-英語を母国語としない他の国でも、Rust を使えるようになることを願っています。
-
-
 ## 本書について
 
 原書である "*Easy Rust*" は 2020年の6月から8月にかけて書かれたもので、400ページを超えるボリュームがあります。
@@ -45,7 +39,7 @@ Rust は理解するために立ち止まって考えなければならないプ
 それ以外にも誤記や誤植、あるいは Pull Requrest などといったものがありましたら同様にどうぞ。
 すでに20人を越す人たちがサンプルコードにある誤植や問題点の解決を手助けしてくれました。
 あなたも参加できます。
-べつに私は世界で最高な Rust の専門家ではないので、常に新しいアイデアを聞いたり、この教科書をより良くすることができる場所を見つけたりするのが好きです。
+私は世界一の Rust の専門家ではないので、常に新しいアイデアを聞いたり、この教科書をより良いものにする方法を探しているところです。
 
 
 - [第一部 ブラウザ上で Rust を動かす](#第一部---ブラウザ上で-rust-を動かす)
@@ -162,6 +156,12 @@ Rust は理解するために立ち止まって考えなければならないプ
   - [Cargo doc](#cargo-doc)
   - [The end?](#the-end?)
 
+## 著者について
+
+私は韓国に住むカナダ人で、ここの会社で働いているエンジニアが簡単に Rust 使い始めることができる方法をいろいろ考えながら本書を書きました。
+英語を母国語としない他の国でも、Rust を使えるようになることを願っています。
+
+
 # 第一部 - ブラウザ上で Rust を動かす
 
 本書は二部に分かれています。
@@ -174,7 +174,7 @@ Rust は理解するために立ち止まって考えなければならないプ
 ファイルの操作、ユーザ入力の受け取り、グラフィックス、そして個人設定
 願わくば第一部の最後まで学習した時点で、Rust をインストールするに値するほど気に入ってくれるものと思います。
 たとえそうでなくても問題ありません。
-第一部では、そんなことをが気にならないくらい、たくさんのことを学びます。
+第一部では、そんなことが気にならないくらい、たくさんのことを学びます。
 
 ## "Rust Playground" について
 **[この章の YouTube 版を観る](https://youtu.be/-lYeJeQ11OI)**
@@ -272,7 +272,7 @@ Rust には数字や文字などを操作できる型がいろいろあります
 ### 基本型
 **[この章の YouTube を観る](https://youtu.be/OxTPU5UGMhs)**
 
-Rust には **基本型（primitive types）**（*primitive* = 「かなり基本的な」という意） と呼ばれる単純な型があります。
+Rust には **基本型（primitive types）**（*primitive* = 「かなり基本的な」という意味） と呼ばれる単純な型があります。
 まず整数と文字（`char`）から始めることにしましょう。
 整数は小数点のない数値全体を表します。
 整数には二種類あります：
@@ -297,7 +297,7 @@ Rust には **基本型（primitive types）**（*primitive* = 「かなり基�
 （自分が使っているコンピュータのビット数のことを、コンピュータの**アーキテクチャ**と呼びます)。
 そのため、自分が使っているコンピュータが 32ビットのコンピュータであれば `isize` と `usize` はそれぞれ `i32` 型と `u32` 型と同じであり、64ビットのコンピュータであれば `isize` と `usize` はそれぞれ `i64` 型と `u64` 型と同じです。
 
-整数を表すのに異なる型が存在している理由はいろいろです。
+整数を表すのに異なる型が存在している理由はいろいろあります。
 一つは、コンピュータのパフォーマンスに関係するものです：
 すなわち、バイト数が小さいほど実行速度が速くなります。
 例えば `i8` 型に格納された -10 という数値は `11110110` ですが、`i128` 型の場合は `11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111110110` です。
@@ -321,10 +321,10 @@ fn main() {
 一般的に使われる単語の文字数は 256 未満であり、`u8` に収まります。
 ここで忘れていはいけないことは、`u8` に収まるのは 0 と 255 までのすべての数値で、合計 256 個だと言うことです。
 これは、Rust ではキーワードの `as` を使って安全に `u8`のデータを `char` に**キャスト**（型変換）できることを意味します
-（「型の `u8` を型の `char` としてキャストする」" とは「型の `u8` が `char` 型のふりをする」ことを意味します）。
+（「`u8` 型を `char` 型としてキャストする」とは「`u8` 型が `char` 型のふりをする」ことを意味します）。
 
 Rust の言語仕様はとても厳格なので、キーワードの `as` を使ってキャストするのが便利です。
-常に型を知る必要があり、そして例え両方が同じ整数であったとしても二つの異なる型を一緒に使用することはできません。
+常に型を知っておく必要があります。たとえ両方が同じ整数であったとしても二つの異なる型を一緒に使用することはできません。
 例えば、次のコードは動きません：
 
 ```rust
@@ -1424,7 +1424,7 @@ That is why we need a &, because `&` makes a pointer, and Rust knows the size of
 
 There are many ways to make a `String`. Here are some:
 
-- `String::from("This is the string text");` This a method for String that takes text and creates a String.
+- `String::from("This is the string text");` This is a method for String that takes text and creates a String.
 - `"This is the string text".to_string()`. This is a method for &str that makes it a String.
 - The `format!` macro. This is like `println!` except it creates a String instead of printing. So you can do this:
 
@@ -3172,7 +3172,7 @@ enum AnimalType {
 impl Animal {
     fn new() -> Self {
         // Self means Animal.
-        //You can also write Animal instead of Self
+        // You can also write Animal instead of Self
 
         Self {
             // When we write Animal::new(), we always get a cat that is 10 years old
@@ -8064,7 +8064,7 @@ fn main() {
 
 So what if you want an actual new type?
 
-If you want a new file type that the compiler sees as a `File`, you can put it in a struct:
+If you want a new file type that the compiler sees as a `File`, you can put it in a struct. (This is actually called the `newtype` idiom)
 
 ```rust
 struct File(String); // File is a wrapper around String
@@ -8098,6 +8098,15 @@ fn main() {
     println!("{}", my_file.0 == my_string); // my_file.0 is a String, so this prints true
 }
 ```
+
+And now this type doesn't have any traits, so you can implement them yourself. This is not too surprising:
+
+```rust
+#[derive(Clone, Debug)]
+struct File(String);
+```
+
+So when you use the `File` type here you can clone it and Debug print it, but it doesn't have the traits of String unless you use `.0` to get to the String inside it. But in other people's code you can only use `.0` if it's marked `pub` for public. And that's why these sorts of types use the `Deref` trait a lot. We will learn about both `pub` and `Deref` later.
 
 ### Importing and renaming inside a function
 
@@ -10417,7 +10426,9 @@ Character { name: "Billybrobby", age: 15, height: 180, weight: 100, lifestate: A
 
 ## Deref and DerefMut
 
-`Deref` is the trait that lets you use `*` to dereference something. We know that a reference is not the same as a value:
+`Deref` is the trait that lets you use `*` to dereference something. We saw the word `Deref` before when using a tuple struct to make a new type, and now it's time to learn it.
+
+We know that a reference is not the same as a value:
 
 ```rust
 // ⚠️
@@ -11973,11 +11984,10 @@ Now that you know a lot of Rust, you will be able to understand most things insi
 
 ### Arrays
 
-One thing about arrays to note is that they don't implement `Iterator.`. That means that if you have an array, you can't use `for`. But you can use methods like `.iter()` on them. Or you can use `&` to get a slice. Actually, the compiler will tell you exactly that if you try to use `for`:
+In the past (before Rust 1.53), arrays didn't implement `Iterator` and you needed to use methods like `.iter()` on them in for `loops`. (People also used `&` to get a slice in `for` loops). So this didn't work in the past:
 
 ```rust
 fn main() {
-    // ⚠️
     let my_cities = ["Beirut", "Tel Aviv", "Nicosia"];
 
     for city in my_cities {
@@ -11986,7 +11996,7 @@ fn main() {
 }
 ```
 
-The message is:
+The compiler used to give this message:
 
 ```text
 error[E0277]: `[&str; 3]` is not an iterator
@@ -11995,11 +12005,15 @@ error[E0277]: `[&str; 3]` is not an iterator
   |                 ^^^^^^^^^ borrow the array with `&` or call `.iter()` on it to iterate over it
 ```
 
-So let's try both. They give the same result.
+Luckily, that isn't a problem anymore! So all three of these work:
 
 ```rust
 fn main() {
     let my_cities = ["Beirut", "Tel Aviv", "Nicosia"];
+
+    for city in my_cities {
+        println!("{}", city);
+    }
 
     for city in &my_cities {
         println!("{}", city);
@@ -12013,6 +12027,9 @@ fn main() {
 This prints:
 
 ```text
+Beirut
+Tel Aviv
+Nicosia
 Beirut
 Tel Aviv
 Nicosia
