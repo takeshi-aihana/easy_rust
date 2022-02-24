@@ -1,5 +1,5 @@
 <!--
-$Lastupdate: 2022/02/21 10:52:06 $
+$Lastupdate: 2022/02/24 11:22:12 $
 -->
 ## Updates
 ![example workflow name](https://github.com/Dhghomon/easy_rust/workflows/github%20pages/badge.svg)
@@ -324,7 +324,7 @@ fn main() {
 （「`u8` 型を `char` 型としてキャストする」とは「`u8` 型が `char` 型のふりをする」ことを意味します）。
 
 Rust の言語仕様はとても厳格なので、キーワードの `as` を使ってキャストするのが便利です。
-常に型を知っておく必要があります。たとえ両方が同じ整数であったとしても二つの異なる型を一緒に使用することはできません。
+Rust は常に型を知っておく必要があり、たとえ両方が同じ整数であったとしても二つの異なる型を一緒に使用することはできません。
 例えば、次のコードは動きません：
 
 ```rust
@@ -332,8 +332,7 @@ fn main() { // main() は Rust のプログラムが実行を開始する場所�
 
     let my_number = 100; // 整数の型を明示的に書かなかったので
                          // Rust は i32 型を選択した
-                         // Rust は整数に対しては常に i32 型を選択する
-                         // （別の型を使うよう明示的に伝えなかかった場合）
+                         // 別の型を使うよう明示的に伝えなかかった場合、Rust は整数に対しては常に i32 型を選択する
 
     println!("{}", my_number as char); // ⚠️
 }
@@ -375,7 +374,7 @@ fn main() {
 ```
 
 これらが Rust で同じ数値に異なる型が提供されている理由ですが、ここにもう一つ別の理由があります：
-`usize` 型は Rust が*インデクス* を作成する際に使用するサイズです（「インデクスを作成する」とは「どのアイテムが一番目で、二番目のアイテムはどれか」といったアイテムを順番付けすることです）。
+`usize` 型は Rust が*インデックス* を作成する際に使用するサイズです（「インデックスを作成する」とは「どのアイテムが一番目で、二番目のアイテムはどれか」といったように、アイテムに順番を付けることです）。
 この `usize` 型がインデックスのサイズに最適な理由は：
 
 - インデックスは負の数にはできないので、`u` が付いた型にする必要がある
@@ -437,7 +436,7 @@ Slice2 is 7 bytes.
 
 `slice` の文字列は 6 文字でサイズは 6 バイトですが、`slice2` の文字列は 3 文字でサイズ 7 バイトとなります。
 
-メソッドの `.len()` がバイト単位でサイズを返す場合、文字単位のサイズはどうすれば得られるかわかりますか？
+メソッドの `.len()` はバイト単位のサイズを返しますが、文字単位のサイズを得るにはどうすればよいでしょうか？
 これらのメソッドについてはあとで学習する予定ですが、ここで覚えておいてほしいことは `.chars().count()` が文字単位でのサイズを返してくれるということです。
 この `.chars().count()` に渡した文字列を複数の文字に分解してから、その数をカウントします。
 
@@ -515,7 +514,7 @@ fn main() {
 
 浮動小数点型数値とは小数点付きの数値のことです。
 5.5 は浮動小数点型数値ですが、6 は整数です。
-5.0 も不動小数点型数値で、5. も不動小数点型数値です。
+5.0 も浮動小数点型数値で、5. も浮動小数点型数値です。
 
 ```rust
 fn main() {
@@ -550,7 +549,7 @@ error[E0308]: mismatched types
   |                                  ^^^^^^^^^^^^^^ expected `f64`, found `f32`
 ```
 
-型の指定を間違えると、コンパイラは "expected 型名, found 型名" と出力します。
+型の指定を間違えると、コンパイラは "expected 正しい型名, found 間違った型名" と出力します。
 Rust は次にようにコードを解釈します：
 
 ```rust
@@ -562,7 +561,7 @@ fn main() {
 }
 ```
 
-したがって "expected 型名, found 型名" が表示されたら、コンパイラが別の型を期待した理由を見つける必要があります。
+したがって "expected 正しい型名, found 間違った型名" が表示されたら、コンパイラが別の型を期待した理由を見つける必要があります。
 
 もちろん単純な数値を使えば簡単に修正できます。
 `as` を使って型を `f32` から `f64` にキャストできます：
@@ -694,9 +693,9 @@ fn number() -> i32 {
 これは、「関数の `number()` は `i32` 型の整数を返すとコンパイラに伝えたのにもかかわらず、関数の最後に（`return` をおかずに）`;` を追加してしまっているので何も返しません」と言う意味になります。
 そのため Rust のコンパイラは最後にそのセミコロンを削除すること提案しています。
 
-また、そこを `return 8;` に変更することも可能ですが、Rust ではただ `;` を削除して `return` するのが普通です。
+また、そこを `return 8;` に変更することも可能ですが、Rust ではただ `;` を削除して呼び出し元に返すのが一般的です。
 
-関数に変数をいくつか渡したい時は、それらを `()` の中に書きます。
+呼び出す関数に変数をいくつか渡したい時は、それらを `()` の中に書きます。
 その際は変数の名前と型を指定して下さい。
 
 ```rust
@@ -919,12 +918,12 @@ fn main() {
 これをコンパイルすると、コンパイラからは同じ "expected" が付いたメッセージが返ってきます：
 `expected integer, found &str` （ちなみに `&str` は文字列型です。あとで説明します）
 
-### シャドーイング（Shadowing）
+### シャドー化（Shadowing）
 **[この章の YouTube を観る](https://youtu.be/InULHyRGw7g)**
 
-**シャドーイング**（*shadowing*）とは、キーワードの `let` を使って、別の変数と同じ名前を持つ新しい変数を宣言することを言います。
+**シャドー化**（*shadowing*）とは、キーワードの `let` を使って、別の変数と同じ名前を持つ新しい変数を宣言することを言います。
 可変性（*mutability*）に似ていますが、まったくの別物です。
-シャドーイングは次のようなものです：
+シャドー化は次のようなものです：
 
 ```rust
 fn main() {
@@ -935,7 +934,7 @@ fn main() {
 }
 ```
 
-これを、新しい「`let` のバインディング」を使って変数の `my_number` を「シャドーイングした」と言います。
+これを、新しい「`let` のバインディング」を使って変数の `my_number` を「シャドー化した」と言います。
 
 この場合、一番最初の `my_number` は破壊されるのでしょうか？
 答えは「いいえ」です。
@@ -959,11 +958,11 @@ fn main() {
 }
 ```
 
-すなわち、変数をシャドーイングしても、その変数が破棄されることはありません。
-その変数を**ブロック**しているのです。
+すなわち、変数をシャドー化しても、すでにある同じ名前の変数が破棄されることはありません。
+同じ名前のその変数を**ブロック**しているのです。
 
-それではシャドーイングすることのメリットは何でしょう？
-一個の変数を頻繁に変更する必要がある場合にシャドーイングが適しています。
+それではシャドー化することのメリットは何でしょうか？
+一個の変数を頻繁に変更する必要がある場合、シャドー化するのが適しています。
 たとえば一個の変数を使って簡単な計算を何度も行いたいケースを想像しみて下さい：
 
 ```rust
@@ -975,15 +974,15 @@ fn main() {
     let final_number = {
         let y = 10;
         let x = 9; // x は 9 からスタート
-        let x = times_two(x); // 新しい x でシャドーイングする：値は 18
-        let x = x + y; // また新しい x でシャドーイングする: 値は 28
+        let x = times_two(x); // 新しい x でシャドー化する：値は 18
+        let x = x + y; // また新しい x でシャドー化する: 値は 28
         x // x を返す: この結果、変数 final_number はこの時点の x の値を持つ
     };
     println!("The number is now: {}", final_number)
 }
 ```
 
-シャドーイングを行わないと、変数の x について気にしない場合でも、別の変数名を考える必要がでてきます：
+シャドー化を使わない場合、変数の `x` について気にしない場合でも別の変数名を考える必要がでてきます：
 
 ```rust
 fn times_two(number: i32) -> i32 {
@@ -991,34 +990,52 @@ fn times_two(number: i32) -> i32 {
 }
 
 fn main() {
-    // シャドーイングが使えない Rust を使っているとします
+    // シャドー化が使えない Rust を使っているとします
     let final_number = {
         let y = 10;
         let x = 9; // x は 9 からスタート
         let x_twice = times_two(x); // これが２つ目の x の変数名
         let x_twice_and_y = x_twice + y; // これが３つ目の x の変数名！
-        x_twice_and_y // シャドーイングが使えないと変数名に悩まされます - シャドーイングがあれば x と言う変数名をそのまま使えるのです
+        x_twice_and_y // シャドー化が使えないと変数名に悩まされます - シャドー化できれば x と言う変数名をそのまま使えるのです
     };
     println!("The number is now: {}", final_number)
 }
 ```
 
-Rust では、上のようなケースではシャドーイングを使うのが一般的です。
+Rust では、上のようなケースではシャドー化を使うのが一般的です。
 すなわち、ある変数を受け取って何か処理を施したら、また別の処理を施すといったサイクルを素早く行いたいケースです。
-通常は、あまり気にならない一時的な作業変数（*quick variable*）にシャドーイングを使います。
+通常は、あまり気にならない一時的な作業変数（*quick variable*）にシャドー化を使います。
 
 aihana
-## The stack, the heap, and pointers
+## スタックとヒープ、そしてポインタ
 
-The stack, the heap, and pointers are very important in Rust.
+Rust では「スタック」、「ヒープ」、そしていろいろな「ポインタ」の概念はとても重要です。
 
-The stack and the heap are two places to keep memory in computers. The important differences are:
+スタックとヒープはコンピュータにメモリを保持する際に使う場所です。
+重要な違いは：
 
-- The stack is very fast, but the heap is not so fast. It's not super slow either, but the stack is always faster. But you can't just use the stack all the time, because:
-- Rust needs to know the size of a variable at compile time. So simple variables like `i32` go on the stack, because we know their exact size. You always know that an `i32` is going to be 4 bytes, because 32 bits = 4 bytes. So `i32` can always go on the stack.
+- スタックは非常に高速ですが、ヒープはそれほど高速ではない。
+ヒープの方が超低速というわけではないが、スタックの方が常に高速である。
+ただしスタックを常に使用できるわけではない。
+その理由は：
+- Rust はコンパイル時に変数の型（値を格納するのに必要となるメモリのサイズ）を知る必要がある。
+たとえば `i32` 型のような単純な変数は、正確なサイズが分かっているので、スタックに格納される。
+すなわち 32 ビット = 4 バイトなので `i32` 型は 4バイトであることが分かっている。
+したがって `i32` 型はいつでもスタックに格納できる。
 - But some types don't know the size at compile time. But the stack needs to know the exact size. So what do you do? First you put the data in the heap, because the heap can have any size of data. And then to find it a pointer goes on the stack. This is fine because we always know the size of a pointer. So then the computer first goes to the stack, reads the pointer, and follows it to the heap where the data is.
+- 他方、コンパイル時にサイズがわからない型もある。
+スタックに格納するには正確なサイズを知る必要がある。
+この場合、あなたらならどうしますか？
+まずヒープにデータを格納して下さい。
+なぜならヒープは任意のサイズのデータを格納することができるから。
+次に、その場所を見つけるために必要なポインタをスタックに格納すること。
+ポインタのサイズは常に分かっているので、この方法は問題はない。
+そのため、コンピュータは最初にスタックに行ってポインタを読み取り、次にデータが格納されているヒープに移動する。
 
 Pointers sound complicated, but they are easy. Pointers are like a table of contents in a book. Imagine this book:
+ポインタは複雑そうに聞こえますが簡単です。
+ポインタは本の目次のようなものです。
+たとえば次のような本を想像してみてください：
 
 ```text
 MY BOOK
