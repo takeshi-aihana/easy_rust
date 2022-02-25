@@ -1,5 +1,5 @@
 <!--
-$Lastupdate: 2022/02/24 11:22:12 $
+$Lastupdate: 2022/02/25 10:41:21 $
 -->
 ## Updates
 ![example workflow name](https://github.com/Dhghomon/easy_rust/workflows/github%20pages/badge.svg)
@@ -1003,7 +1003,7 @@ fn main() {
 ```
 
 Rust では、上のようなケースではシャドー化を使うのが一般的です。
-すなわち、ある変数を受け取って何か処理を施したら、また別の処理を施すといったサイクルを素早く行いたいケースです。
+すなわち、ある変数を受け取って何か処理を実行したら、また別の処理を実行するといったサイクルを素早く行いたいケースです。
 通常は、あまり気にならない一時的な作業変数（*quick variable*）にシャドー化を使います。
 
 aihana
@@ -1014,65 +1014,80 @@ Rust では「スタック」、「ヒープ」、そしていろいろな「ポ
 スタックとヒープはコンピュータにメモリを保持する際に使う場所です。
 重要な違いは：
 
-- スタックは非常に高速ですが、ヒープはそれほど高速ではない。
-ヒープの方が超低速というわけではないが、スタックの方が常に高速である。
+- スタックへのアクセスは非常に高速ですが、ヒープへのアクセスはそれほど高速ではありません。
+ヒープが超低速というわけではないが、スタックの方が常に高速にアクセスできます。
 ただしスタックを常に使用できるわけではない。
 その理由は：
-- Rust はコンパイル時に変数の型（値を格納するのに必要となるメモリのサイズ）を知る必要がある。
-たとえば `i32` 型のような単純な変数は、正確なサイズが分かっているので、スタックに格納される。
-すなわち 32 ビット = 4 バイトなので `i32` 型は 4バイトであることが分かっている。
-したがって `i32` 型はいつでもスタックに格納できる。
-- But some types don't know the size at compile time. But the stack needs to know the exact size. So what do you do? First you put the data in the heap, because the heap can have any size of data. And then to find it a pointer goes on the stack. This is fine because we always know the size of a pointer. So then the computer first goes to the stack, reads the pointer, and follows it to the heap where the data is.
-- 他方、コンパイル時にサイズがわからない型もある。
-スタックに格納するには正確なサイズを知る必要がある。
+- Rust はコンパイル時に変数の型（値を格納するのに必要となるメモリのサイズ）を知る必要があります。
+たとえば `i32` 型のような単純な変数は正確なサイズが分かっているので、スタックに格納されます。
+すなわち 32 ビット = 4 バイトなので `i32` 型は 4バイトであることが分かっています。
+したがって `i32` 型は常にスタックに格納できます。
+- その一方で、コンパイル時にサイズがわからない型もあります。
+スタックに格納するには正確なサイズを知る必要があります。
 この場合、あなたらならどうしますか？
 まずヒープにデータを格納して下さい。
-なぜならヒープは任意のサイズのデータを格納することができるから。
-次に、その場所を見つけるために必要なポインタをスタックに格納すること。
-ポインタのサイズは常に分かっているので、この方法は問題はない。
-そのため、コンピュータは最初にスタックに行ってポインタを読み取り、次にデータが格納されているヒープに移動する。
+なぜならヒープは任意のサイズのデータを格納することができるからです。
+次に、その場所を見つけるために必要なポインタをスタックに格納してください。
+ポインタのサイズは常に分かっているので、この方法は問題はありません。
+そのため、コンピュータは最初にスタックに行ってポインタを読み取り、次にデータが格納されているヒープに移動します。
 
-Pointers sound complicated, but they are easy. Pointers are like a table of contents in a book. Imagine this book:
-ポインタは複雑そうに聞こえますが簡単です。
+ポインタの概念は複雑そうに聞こえますが簡単です。
 ポインタは本の目次のようなものです。
 たとえば次のような本を想像してみてください：
 
 ```text
-MY BOOK
+私の本
 
-TABLE OF CONTENTS
+目次
 
-Chapter                        Page
-Chapter 1: My life              1
-Chapter 2: My cat               15
-Chapter 3: My job               23
-Chapter 4: My family            30
-Chapter 5: Future plans         43
+章                           頁
+第一章: 私の人生              1
+第二章: 私の猫               15
+第三章: 私の仕事             23
+第四章: 私の家族             30
+第五章: 将来の計画           43
 ```
 
 So this is like five pointers. You can read them and find the information they are talking about. Where is the chapter "My life"? It's on page 1 (it *points* to page 1). Where is the chapter "My job?" It's on page 23.
+えっと、この場合だと５つのポインタのようなものになります。
+目次を読んで、各章が語っている内容について情報を見つけることができます。
+「私の人生」という章は何頁にありますか？
+それは1頁目にあります（すなわち1頁を*指しています*）。
+「私の仕事」の章は何頁ですか？
+23頁目になります。
 
 The pointer you usually see in Rust is called a **reference**. This is the important part to know: a reference points to the memory of another value. A reference means you *borrow* the value, but you don't own it. It's the same as our book: the table of contents doesn't own the information. It's the chapters that own the information. In Rust, references have a `&` in front of them. So:
 
-- `let my_variable = 8` makes a regular variable, but
-- `let my_reference = &my_variable` makes a reference.
+通常 Rust ではポインタを **参照**（*Reference*）と呼んでいます。
+これは知っておくべき重要な事柄です：
+一個の参照は別の値のメモリを指しています。
+参照とは、値を*借りている*だけで、所有していないことを意味しています。
+これはさきほどの本の場合と同じです：
+つまり目次には章で語られている内容は含まれていません。
+それがあるのは実際の章です。
+Rust では参照の先頭に `&` が付きます。
+すなわち：
 
-You read `my_reference = &my_variable` like this: "my_reference is a reference to my_variable". Or: "my_reference refers to my_variable".
+- `let my_variable = 8` は通常の変数を作成しますが、
+- `let my_reference = &my_variable` は参照を作成します
+
+`my_reference = &my_variable` の部分の解釈としては：「"`my_reference` は `my_variable` への参照」、あるいは「`my_reference` という変数は `my_variable` という変数を参照する」になります。
 
 This means that `my_reference` is only looking at the data of `my_variable`. `my_variable` still owns its data.
+これは、`my_reference` という変数が `my_variable` が所有しているデータを見ているだけであり、`my_variable` は依然として自分でデータを所有していることを意味しています。
 
-You can also have a reference to a reference, or any number of references.
+さらに参照の参照とか、任意の数の参照も使えます。
 
 ```rust
 fn main() {
-    let my_number = 15; // This is an i32
-    let single_reference = &my_number; //  This is a &i32
-    let double_reference = &single_reference; // This is a &&i32
-    let five_references = &&&&&my_number; // This is a &&&&&i32
+    let my_number = 15; // これは i32 型の値
+    let single_reference = &my_number; //  これは &i32 型
+    let double_reference = &single_reference; // これは &&i32 型
+    let five_references = &&&&&my_number; // これは &&&&&i32 型
 }
 ```
 
-These are all different types, just in the same way that "a friend of a friend" is different from "a friend".
+「友達の友達」が「友達」ではないのと同様に、これらはすべて異なる型です。
 
 ## More about printing
 
