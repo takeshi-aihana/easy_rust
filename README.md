@@ -1,5 +1,5 @@
 <!--
-$Lastupdate: 2022/02/25 10:41:21 $
+$Lastupdate: 2022/02/25 23:58:20 $
 -->
 ## Updates
 ![example workflow name](https://github.com/Dhghomon/easy_rust/workflows/github%20pages/badge.svg)
@@ -1006,7 +1006,6 @@ Rust では、上のようなケースではシャドー化を使うのが一般
 すなわち、ある変数を受け取って何か処理を実行したら、また別の処理を実行するといったサイクルを素早く行いたいケースです。
 通常は、あまり気にならない一時的な作業変数（*quick variable*）にシャドー化を使います。
 
-aihana
 ## スタックとヒープ、そしてポインタ
 
 Rust では「スタック」、「ヒープ」、そしていろいろな「ポインタ」の概念はとても重要です。
@@ -1048,15 +1047,12 @@ Rust では「スタック」、「ヒープ」、そしていろいろな「ポ
 第五章: 将来の計画           43
 ```
 
-So this is like five pointers. You can read them and find the information they are talking about. Where is the chapter "My life"? It's on page 1 (it *points* to page 1). Where is the chapter "My job?" It's on page 23.
 えっと、この場合だと５つのポインタのようなものになります。
 目次を読んで、各章が語っている内容について情報を見つけることができます。
 「私の人生」という章は何頁にありますか？
 それは1頁目にあります（すなわち1頁を*指しています*）。
 「私の仕事」の章は何頁ですか？
 23頁目になります。
-
-The pointer you usually see in Rust is called a **reference**. This is the important part to know: a reference points to the memory of another value. A reference means you *borrow* the value, but you don't own it. It's the same as our book: the table of contents doesn't own the information. It's the chapters that own the information. In Rust, references have a `&` in front of them. So:
 
 通常 Rust ではポインタを **参照**（*Reference*）と呼んでいます。
 これは知っておくべき重要な事柄です：
@@ -1071,9 +1067,8 @@ Rust では参照の先頭に `&` が付きます。
 - `let my_variable = 8` は通常の変数を作成しますが、
 - `let my_reference = &my_variable` は参照を作成します
 
-`my_reference = &my_variable` の部分の解釈としては：「"`my_reference` は `my_variable` への参照」、あるいは「`my_reference` という変数は `my_variable` という変数を参照する」になります。
+`my_reference = &my_variable` の部分を解釈すると：「`my_reference` は `my_variable` への参照」、あるいは「`my_reference` という変数は `my_variable` という変数を参照する」になります。
 
-This means that `my_reference` is only looking at the data of `my_variable`. `my_variable` still owns its data.
 これは、`my_reference` という変数が `my_variable` が所有しているデータを見ているだけであり、`my_variable` は依然として自分でデータを所有していることを意味しています。
 
 さらに参照の参照とか、任意の数の参照も使えます。
@@ -1089,6 +1084,7 @@ fn main() {
 
 「友達の友達」が「友達」ではないのと同様に、これらはすべて異なる型です。
 
+aihana
 ## More about printing
 
 In Rust you can print things in almost any way you want. Here are some more things to know about printing.
