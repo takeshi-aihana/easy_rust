@@ -1,5 +1,5 @@
 <!--
-$Lastupdate: 2022/02/26  0:11:51 $
+$Lastupdate: 2022/03/04 16:53:06 $
 -->
 ## Updates
 ![example workflow name](https://github.com/Dhghomon/easy_rust/workflows/github%20pages/badge.svg)
@@ -1084,21 +1084,21 @@ fn main() {
 
 「友達の友達」が「友達」ではないのと同様に、これらはすべて異なる型です。
 
-aihana
-## More about printing
+## 出力について詳細
 
-In Rust you can print things in almost any way you want. Here are some more things to know about printing.
+Rust では何かを出力するのにいろいろな方法が利用できます。
+ここでは、出力に関して知っておくべきことをまとめます。
 
-Adding `\n` will make a new line, and `\t` will make a tab:
+`\n` を追加すると改行され、`\t` はタブスペースを挿入します:
 
 ```rust
 fn main() {
-    // Note: this is print!, not println!
+    // 注記: これは print! マクロであって println! マクロではありません
     print!("\t Start with a tab\nand move to a new line");
 }
 ```
 
-This prints:
+この出力は：
 
 ```text
          Start with a tab
@@ -1106,11 +1106,12 @@ and move to a new line
 ```
 
 Inside `""` you can write over many lines with no problem, but be careful with the spacing:
+`""` の中であれば複数の行を書いても問題はありませんが、空白（スペース）には注意が必要です:
 
 ```rust
 fn main() {
-    // Note: After the first line you have to start on the far left.
-    // If you write directly under println!, it will add the spaces
+    // 注記: 先頭行の次の行から左端から書いていく必要がある
+    // もし println! マクロの直下から書き始めたら左端から空白が追加される
     println!("Inside quotes
 you can write over
 many lines
@@ -1122,7 +1123,7 @@ and it will print just fine.");
 }
 ```
 
-This prints:
+この出力は:
 
 ```text
 Inside quotes
@@ -1134,7 +1135,7 @@ If you forget to write
     will be added when you print.
 ```
 
-If you want to print characters like `\n` (called "escape characters"), you can add an extra `\`:
+`\n` のような「エスケープ文字」をそのまま出力させたい場合は、`\` 文字を重ねて下さい：
 
 ```rust
 fn main() {
@@ -1142,46 +1143,48 @@ fn main() {
 }
 ```
 
-This prints:
+この出力は:
 
 ```text
 Here are two escape characters: \n and \t
 ```
 
-Sometimes you have too many `"` and escape characters, and want Rust to ignore everything. To do this, you can add `r#` to the beginning and `#` to the end.
+まれに `"` 文字やエスケープ文字が多くなりすぎて Rust にそれらすべてを無視させたくなる場合があります。
+そのような場合、先頭に `r#` という文字列を追加してから書き始め、終端に `#` を追加して下さい。
 
 ```rust
 fn main() {
-    println!("He said, \"You can find the file at c:\\files\\my_documents\\file.txt.\" Then I found the file."); // We used \ five times here
+    println!("He said, \"You can find the file at c:\\files\\my_documents\\file.txt.\" Then I found the file."); // ここでは '\' を5個も書いている
     println!(r#"He said, "You can find the file at c:\files\my_documents\file.txt." Then I found the file."#)
 }
 ```
 
-This prints the same thing, but using `r#` makes it easier for humans to read.
+これを実行すると2行とも同じように出力されますが、`r#` を使えばコードが読みやすくなります。
 
 ```text
 He said, "You can find the file at c:\files\my_documents\file.txt." Then I found the file.
 He said, "You can find the file at c:\files\my_documents\file.txt." Then I found the file.
 ```
 
-If you need to print with a `#` inside, then you can start with `r##` and end with `##`. And if you need more than one, you can add one more # on each side.
+ここで `#` 文字そのものを出力させたい場合、先頭に `r##` を追加して終端に `##` を追加して下さい。
+また複数の `#` 文字を出力させたい場合は、先頭と終端にそれぞれ `#` 文字を必要な数だけ追加して下さい。
 
-Here are four examples:
+次に4つの出力例を紹介します：
 
 ```rust
 fn main() {
 
-    let my_string = "'Ice to see you,' he said."; // single quotes
-    let quote_string = r#""Ice to see you," he said."#; // double quotes
-    let hashtag_string = r##"The hashtag #IceToSeeYou had become very popular."##; // Has one # so we need at least ##
-    let many_hashtags = r####""You don't have to type ### to use a hashtag. You can just use #.""####; // Has three ### so we need at least ####
+    let my_string = "'Ice to see you,' he said."; // シングルクオーテーションを出力する
+    let quote_string = r#""Ice to see you," he said."#; // ダブルクオーテーションを出力する
+    let hashtag_string = r##"The hashtag #IceToSeeYou had become very popular."##; // # を出力したいので、その外側の両端は ## の記述にする
+    let many_hashtags = r####""You don't have to type ### to use a hashtag. You can just use #.""####; // ### を出力したいので、その外側の両端は #### の記述にする
 
     println!("{}\n{}\n{}\n{}\n", my_string, quote_string, hashtag_string, many_hashtags);
 
 }
 ```
 
-This will print:
+この出力は：
 
 ```text
 'Ice to see you,' he said.
@@ -1189,19 +1192,23 @@ This will print:
 The hashtag #IceToSeeYou had become very popular.
 "You don't have to type ### to use a hashtag. You can just use #."
 ```
-
-`r#` has another use: with it you can use a keyword (words like `let`, `fn`, etc.) as a variable name.
+aihana
+`r#` にはもう一つ別の使い方があります：
+キーワード（`let` や `fn` などの予約語）を変数名として使用できます。
 
 ```rust
 fn main() {
-    let r#let = 6; // The variable's name is let
-    let mut r#mut = 10; // This variable's name is mut
+    let r#let = 6; // 変数名が let
+    let mut r#mut = 10; // 変数名が mut
 }
 ```
 
-`r#` has this function because older versions of Rust had fewer keywords than Rust now. So with `r#` you can avoid mistakes with variable names that were not keywords before.
+So with `r#` you can avoid mistakes with variable names that were not keywords before.
+`r#` にこのような機能があるのは、古いバージョンの Rust は現在のバージョンよりもキーワードの数が少なかったからです。
+そのため `r#` を使うと、古いバージョンには無かったキーワードを変数名として使ってしまうというミスを回避できます。
 
-Or maybe for some reason you *really* need a function to have a name like `return`. Then you can write this:
+もしくは何らかの理由により、たとえば `return` と言う名前の関数が*本当に*に必要になるかもしれません。
+そのような場合は次のように記述できます：
 
 ```rust
 fn r#return() -> u8 {
@@ -1215,24 +1222,25 @@ fn main() {
 }
 ```
 
-This prints:
+この出力は：
 
 ```text
 Here is your number.
 8
 ```
 
-So you probably won't need it, but if you really need to use a keyword for a variable then you can use `r#`.
+そのため、おそらく必要になることはないと思いますが、本当にキーワードを変数名に使用する必要があるならば `r#`を使って下さい。
 
 
-
-If you want to print the bytes of a `&str` or a `char`, you can just write `b` before the string. This works for all ASCII characters. These are all the ASCII characters:
+もし `&str` や `char`のバイト列を出力したい場合は、文字列の前に `b` と書くだけです。
+これはすべての ASCII 文字で機能します。
+すべての ASCII 文字とは：
 
 ```text
 ☺☻♥♦♣♠♫☼►◄↕‼¶§▬↨↑↓→∟↔▲▼123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
 ```
 
-So when you print this:
+これを出力するには：
 
 ```rust
 fn main() {
@@ -1240,16 +1248,16 @@ fn main() {
 }
 ```
 
-Here is the result:
+この出力は：
 
 ```text
 [84, 104, 105, 115, 32, 119, 105, 108, 108, 32, 108, 111, 111, 107, 32, 108, 105, 107, 101, 32, 110, 117, 109, 98, 101, 114, 115]
 ```
 
-For a `char` this is called a *byte*, and for a `&str` it's called a *byte string*.
+`char` 型の場合は*バイト*、そして `&str` 型の場合は*バイト文字列*と呼びます。
 
 
-You can also put `b` and `r` together if you need to:
+必要に応じて `b` と `r` を組み合わせて使用できます：
 
 ```rust
 fn main() {
@@ -1257,28 +1265,33 @@ fn main() {
 }
 ```
 
-That will print `[73, 32, 108, 105, 107, 101, 32, 116, 111, 32, 119, 114, 105, 116, 101, 32, 34, 35, 34, 46]`.
+この出力は `[73, 32, 108, 105, 107, 101, 32, 116, 111, 32, 119, 114, 105, 116, 101, 32, 34, 35, 34, 46]`
 
 
 
-There is also a Unicode escape that lets you print any Unicode character inside a string: `\u{}`. A hexadecimal number goes inside the `{}` to print it. Here is a short example of how to get the Unicode number, and how to print it again.
+他に、ユニコードをエスケープする方法もあります。これは文字列の中にあるすべてのユニコード番号を出力します：`\u{}`
+出力する際に `{}` の中に16進数が入ります。
+次はユニコード番号を取得し出力する方法の簡単な例です：
 
 ```rust
 fn main() {
-    println!("{:X}", '행' as u32); // Cast char as u32 to get the hexadecimal value
+    println!("{:X}", '행' as u32); // char 型を u32 型にキャストし、16進数値にする
     println!("{:X}", 'H' as u32);
     println!("{:X}", '居' as u32);
     println!("{:X}", 'い' as u32);
 
-    println!("\u{D589}, \u{48}, \u{5C45}, \u{3044}"); // Try printing them with unicode escape \u
+    println!("\u{D589}, \u{48}, \u{5C45}, \u{3044}"); // そしてユニコード・エスケープ\u を使って出力してみる
 }
 ```
 
 
 
 We know that `println!` can print with `{}` (for Display) and `{:?}` (for Debug), plus `{:#?}` for pretty printing. But there are many other ways to print.
+マクロの `println!` は `{}` で通常の出力を、`{:?}` でデバッグ出力、さらに `{:#?}` で出力をれいに整形できることを学習しました。
+しかし、他にも出力する方法がたくさんあります。
 
-For example, if you have a reference, you can use `{:p}` to print the *pointer address*. Pointer address means the location in your computer's memory.
+たとえば、任意の参照がある時に `{:p}` を使って*ポインタのアドレスs*を出力できます。
+ポインタアドレスとはコンピュータのメモリの中の位置をを表しています。
 
 ```rust
 fn main() {
@@ -1289,8 +1302,10 @@ fn main() {
 ```
 
 This prints `0xe2bc0ffcfc` or some other address. It might be different every time, depending on where your computer stores it.
+この出力は `0xe2bc0ffcfc` のような任意のアドレスです。
+その値はお使いのコンピュータが格納する場所によって毎回異なるかもしれません。
 
-Or you can print binary, hexadecimal and octal:
+他には2進数、16進数、そして8進数表記ができます：
 
 ```rust
 fn main() {
@@ -1299,7 +1314,7 @@ fn main() {
 }
 ```
 
-This prints `Binary: 1000101011, hexadecimal: 22b, octal: 1053`.
+この出力は： `Binary: 1000101011, hexadecimal: 22b, octal: 1053`
 
 Or you can add numbers to change the order. The first variable will be in index 0, the next in index 1, and so on.
 
