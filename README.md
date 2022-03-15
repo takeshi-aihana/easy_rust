@@ -1,5 +1,5 @@
 <!--
-$Lastupdate: 2022/03/16  0:50:07 $
+$Lastupdate: 2022/03/16  0:54:12 $
 -->
 ## Updates
 ![example workflow name](https://github.com/Dhghomon/easy_rust/workflows/github%20pages/badge.svg)
@@ -1394,12 +1394,12 @@ fn main() {
 ```rust
 fn main() {
     let title = "TODAY'S NEWS";
-    println!("{:-^30}", title); // 変数名なし、パッディング用文字は -、中央寄せ、最長で30文字まで
+    println!("{:-^30}", title); // 変数名なし、パッディング文字は -、中央寄せにして、文字数は最大で30文字まで
     let bar = "|";
-    println!("{: <15}{: >15}", bar, bar); // 変数名なし、パディング用文字は空白、15 文字ごとに、一つは左寄せ、もう一つは右寄せ
+    println!("{: <15}{: >15}", bar, bar); // 変数名なし、パディング文字は空白、15文字ごとに、一つは左寄せ、もう一つは右寄せ
     let a = "SEOUL";
     let b = "TOKYO";
-    println!("{city1:-<15}{city2:->15}", city1 = a, city2 = b); // 変数名は city1 と city2、パディング用文字は -、一つは左寄せ、もう一つは右寄せ
+    println!("{city1:-<15}{city2:->15}", city1 = a, city2 = b); // 変数名は city1 と city2、パディング文字は -、一つは左寄せ、もう一つは右寄せ
 }
 ```
 
