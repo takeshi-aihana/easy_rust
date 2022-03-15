@@ -1,5 +1,5 @@
 <!--
-$Lastupdate: 2022/03/15 21:26:53 $
+$Lastupdate: 2022/03/15 22:19:11 $
 -->
 ## Updates
 ![example workflow name](https://github.com/Dhghomon/easy_rust/workflows/github%20pages/badge.svg)
@@ -1355,12 +1355,12 @@ but Tokyo is not in Korea.
 ```
 
 
-Rust ではとても複雑な書式で文字列を出力することができます。
-その書式は次のとおりです：
+Rust ではとても複雑な書式を持つ文字列を出力することができます。
+その書式の定義は次のとおりです：
 
 ``{変数名:パディング文字 配置 最小数.最大数}``
 
-これは、次のように問答しながら理解してみて下さい：
+これには、次のように問答しながら理解してみて下さい：
 
 1) 変数名は必要はないか？
 必要ならば `{country}` のように最初に変数名を書いて下さい。
