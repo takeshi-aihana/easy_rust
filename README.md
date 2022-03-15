@@ -1,5 +1,5 @@
 <!--
-$Lastupdate: 2022/03/15 21:25:16 $
+$Lastupdate: 2022/03/15 21:26:53 $
 -->
 ## Updates
 ![example workflow name](https://github.com/Dhghomon/easy_rust/workflows/github%20pages/badge.svg)
@@ -1356,7 +1356,7 @@ but Tokyo is not in Korea.
 
 
 Rust ではとても複雑な書式で文字列を出力することができます。
-そのやり方は次のとおりです：
+その書式は次のとおりです：
 
 ``{変数名:パディング文字 配置 最小数.最大数}``
 
