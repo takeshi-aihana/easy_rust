@@ -1,5 +1,5 @@
 <!--
-$Lastupdate: 2022/03/15 17:50:04 $
+$Lastupdate: 2022/03/15 21:25:16 $
 -->
 ## Updates
 ![example workflow name](https://github.com/Dhghomon/easy_rust/workflows/github%20pages/badge.svg)
@@ -1355,31 +1355,23 @@ but Tokyo is not in Korea.
 ```
 
 
-Rust ではとても複雑な文字列を出力することができます。
+Rust ではとても複雑な書式で文字列を出力することができます。
 そのやり方は次のとおりです：
 
-``{variable:padding alignment minimum.maximum}``
+``{変数名:パディング文字 配置 最小数.最大数}``
 
 これは、次のように問答しながら理解してみて下さい：
 
-1) Do you want a variable name? Write that first, like when we wrote {country} above.
-(Then add a `:` after it if you want to do more things)
-2) Do you want a padding character? For example, 55 with three "padding zeros" looks like 00055.
-3) What alignment (left / middle / right) for the padding?
-4) Do you want a minimum length? (just write a number)
-5) Do you want a maximum length? (write a number with a `.` in front)
-
-1) 変数名を指定する必要はありませんか？
-`{country}` のように、まず最初に変数名を書いて下さい。
-（さらにたくさんのことをしたいのであれば、変数名の後ろにコロン `:` を追加して下さい）
-2) 桁を揃えるためにパディング用の文字は必要ありませんか？
+1) 変数名は必要はないか？
+必要ならば `{country}` のように最初に変数名を書いて下さい。
+（さらに別の書式を追加したい場合は、変数名の後ろにコロン `:` を付けて下さい）
+2) 桁数を揃えるためのパディング文字は必要ないか？
 たとえば ``55`` に「3個のゼロ」を付けると ``00055`` のように出力されます。
-3) パディングする方向（左寄せ / 中寄せ / 右寄せ）は必要ですか？
-4) 文字数の下限は必要ありませんか？（下限値の数字をかくだけです）
-5) 文字数の上限は必要ありませんか？（文字の前に `.` を置いて上限値の数字を書くだけです）
+3) 文字列の配置（左寄せ / 中央寄せ / 右寄せ）を指定するか？
+4) 文字数の下限を指定するか？（最小値を書くだけです）
+5) 文字数の上限を指定するか？（`.` を付けてから最大値を書いて下さい）
 
-For example, if I want to write "a" with five ㅎ characters on the left and five ㅎ characters on the right:
-たとえば、左側に 5個のㅎ文字を、右側に5個のㅎ文字を含む "a" を書きたいのであれば：
+たとえば、"a" を中心に左側に5個のㅎ文字を、右側に5個のㅎ文字を出力させたいのであれば：
 
 ```rust
 fn main() {
@@ -1391,18 +1383,13 @@ fn main() {
 この出力は `ㅎㅎㅎㅎㅎaㅎㅎㅎㅎㅎ` になります。
 このコードをコンパイラがどのように解釈するのかについて、上の五つのステップに従って見ていくことにしましょう：
 
-- Do you want a variable name? `{:ㅎ^11}` There is no variable name. There is nothing before `:`.
-- Do you want a padding character? `{:ㅎ^11}` Yes. ㅎ comes after the `:` and has a `^`. `<` means padding with the character on the left, `>` means on the right, and `^` means in the middle.
-- Do you want a minimum length? `{:ㅎ^11}` Yes: there is an 11 after.
-- Do you want a maximum length? `{:ㅎ^11}` No: there is no number with a `.` before.
-
-- 変数名があるか？ `{:ㅎ^11}` 変数名はない。コロン `:` の前に何もないので。
-- 桁揃えのパディング用の文字はあるか？ `{:ㅎ^11}` ある。ㅎ はコロン `:` の後ろにあり、`^` が付いている。`<` はパディング用文字を左寄せにすることを意味し、`>` は同様に右寄せすることを意味し、`^` は中央寄せすることを意味する。
-- 文字数の下限は？ `{:ㅎ^11}` ある： `11` が付いている。
-- 文字数の上限は？ `{:ㅎ^11}` ない： `.` が付いた数値がない。
+- 変数名はあるか？ `{:ㅎ^11}` には変数名はない。コロン `:` の前に何もないので。
+- 桁揃えのパディング文字はあるか？ `{:ㅎ^11}` にはある。ㅎ はコロン `:` の後ろにあり、`^` が付いている。`<` はパディング用文字を左寄せにすることを意味し、`>` は同様に右寄せすることを意味し、`^` は中央寄せすることを意味する。
+- 文字数の下限は？ `{:ㅎ^11}` にはある： `11` が付いている。
+- 文字数の上限は？ `{:ㅎ^11}` にはない： `.` が付いた数値がない。
 
 
-次は、たくさんの種類の書式を適用した例です：
+次は、さまざまな書式を適用した例です：
 
 ```rust
 fn main() {
