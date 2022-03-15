@@ -1,5 +1,5 @@
 <!--
-$Lastupdate: 2022/03/04 16:53:06 $
+$Lastupdate: 2022/03/15 17:50:04 $
 -->
 ## Updates
 ![example workflow name](https://github.com/Dhghomon/easy_rust/workflows/github%20pages/badge.svg)
@@ -1192,7 +1192,7 @@ fn main() {
 The hashtag #IceToSeeYou had become very popular.
 "You don't have to type ### to use a hashtag. You can just use #."
 ```
-aihana
+
 `r#` にはもう一つ別の使い方があります：
 キーワード（`let` や `fn` などの予約語）を変数名として使用できます。
 
@@ -1286,8 +1286,7 @@ fn main() {
 
 
 
-We know that `println!` can print with `{}` (for Display) and `{:?}` (for Debug), plus `{:#?}` for pretty printing. But there are many other ways to print.
-マクロの `println!` は `{}` で通常の出力を、`{:?}` でデバッグ出力、さらに `{:#?}` で出力をれいに整形できることを学習しました。
+マクロの `println!` は `{}` で通常の出力を、そして {:?}` でデバッグ出力を、さらに `{:#?}` で出力をきれいに整形できることを学習しました。
 しかし、他にも出力する方法がたくさんあります。
 
 たとえば、任意の参照がある時に `{:p}` を使って*ポインタのアドレスs*を出力できます。
@@ -1301,7 +1300,6 @@ fn main() {
 }
 ```
 
-This prints `0xe2bc0ffcfc` or some other address. It might be different every time, depending on where your computer stores it.
 この出力は `0xe2bc0ffcfc` のような任意のアドレスです。
 その値はお使いのコンピュータが格納する場所によって毎回異なるかもしれません。
 
@@ -1316,7 +1314,8 @@ fn main() {
 
 この出力は： `Binary: 1000101011, hexadecimal: 22b, octal: 1053`
 
-Or you can add numbers to change the order. The first variable will be in index 0, the next in index 1, and so on.
+または番号で置き換えて、出力する順番を変更することもできます。
+つまり最初の変数のインデックスは 0 で、次の変数のインデックスは 1、などです。
 
 ```rust
 fn main() {
@@ -1327,10 +1326,13 @@ fn main() {
 }
 ```
 
-`father_name` is in position 0, `son_name` is in position 1, and `family_name` is in position 2. So it prints `This is Adrian Fahrenheit Țepeș, son of Vlad Țepeș`.
+上の例では`father_name` はインデックス 0、`son_name` はインデックス 1、そして `family_name` はインデックス 2 の位置にそれぞれあります。
+したがって、この出力は `This is Adrian Fahrenheit Țepeș, son of Vlad Țepeș` になります。
 
 
-Maybe you have a very complex string to print with too many variables inside the `{}` curly brackets. Or maybe you need to print a variable more than one time. Then it can help to add names to the `{}`:
+実際は、中括弧 `{}` の中にはたくさんの変数が並んだとても複雑な文字列なのかもしれません。
+あるいは一個の変数を何度も出力する必要があるかもしれません。
+そのような場合は中括弧 `{}` には数字ではなく変数名を付与すると良いかもしれません：
 
 ```rust
 fn main() {
@@ -1345,7 +1347,7 @@ but {city3} is not in {country}.",
 }
 ```
 
-That will print:
+この出力は：
 
 ```text
 Seoul is in Korea and Busan is also in Korea,
@@ -1353,11 +1355,12 @@ but Tokyo is not in Korea.
 ```
 
 
-Very complex printing is also possible in Rust if you want to use it. Here is how to do it:
+Rust ではとても複雑な文字列を出力することができます。
+そのやり方は次のとおりです：
 
-{variable:padding alignment minimum.maximum}
+``{variable:padding alignment minimum.maximum}``
 
-To understand this, look at the
+これは、次のように問答しながら理解してみて下さい：
 
 1) Do you want a variable name? Write that first, like when we wrote {country} above.
 (Then add a `:` after it if you want to do more things)
@@ -1366,7 +1369,17 @@ To understand this, look at the
 4) Do you want a minimum length? (just write a number)
 5) Do you want a maximum length? (write a number with a `.` in front)
 
+1) 変数名を指定する必要はありませんか？
+`{country}` のように、まず最初に変数名を書いて下さい。
+（さらにたくさんのことをしたいのであれば、変数名の後ろにコロン `:` を追加して下さい）
+2) 桁を揃えるためにパディング用の文字は必要ありませんか？
+たとえば ``55`` に「3個のゼロ」を付けると ``00055`` のように出力されます。
+3) パディングする方向（左寄せ / 中寄せ / 右寄せ）は必要ですか？
+4) 文字数の下限は必要ありませんか？（下限値の数字をかくだけです）
+5) 文字数の上限は必要ありませんか？（文字の前に `.` を置いて上限値の数字を書くだけです）
+
 For example, if I want to write "a" with five ㅎ characters on the left and five ㅎ characters on the right:
+たとえば、左側に 5個のㅎ文字を、右側に5個のㅎ文字を含む "a" を書きたいのであれば：
 
 ```rust
 fn main() {
@@ -1375,28 +1388,35 @@ fn main() {
 }
 ```
 
-This prints `ㅎㅎㅎㅎㅎaㅎㅎㅎㅎㅎ`. Let's look at 1) to 5) for this to understand how the compiler reads it.
+この出力は `ㅎㅎㅎㅎㅎaㅎㅎㅎㅎㅎ` になります。
+このコードをコンパイラがどのように解釈するのかについて、上の五つのステップに従って見ていくことにしましょう：
 
 - Do you want a variable name? `{:ㅎ^11}` There is no variable name. There is nothing before `:`.
 - Do you want a padding character? `{:ㅎ^11}` Yes. ㅎ comes after the `:` and has a `^`. `<` means padding with the character on the left, `>` means on the right, and `^` means in the middle.
 - Do you want a minimum length? `{:ㅎ^11}` Yes: there is an 11 after.
 - Do you want a maximum length? `{:ㅎ^11}` No: there is no number with a `.` before.
 
-Here is an example of many types of formatting.
+- 変数名があるか？ `{:ㅎ^11}` 変数名はない。コロン `:` の前に何もないので。
+- 桁揃えのパディング用の文字はあるか？ `{:ㅎ^11}` ある。ㅎ はコロン `:` の後ろにあり、`^` が付いている。`<` はパディング用文字を左寄せにすることを意味し、`>` は同様に右寄せすることを意味し、`^` は中央寄せすることを意味する。
+- 文字数の下限は？ `{:ㅎ^11}` ある： `11` が付いている。
+- 文字数の上限は？ `{:ㅎ^11}` ない： `.` が付いた数値がない。
+
+
+次は、たくさんの種類の書式を適用した例です：
 
 ```rust
 fn main() {
     let title = "TODAY'S NEWS";
-    println!("{:-^30}", title); // no variable name, pad with -, put in centre, 30 characters long
+    println!("{:-^30}", title); // 変数名なし、パッディング用文字は -、中央寄せ、最長で30文字まで
     let bar = "|";
-    println!("{: <15}{: >15}", bar, bar); // no variable name, pad with space, 15 characters each, one to the left, one to the right
+    println!("{: <15}{: >15}", bar, bar); // 変数名なし、パディング用文字は空白、15 文字ごとに、一つは左寄せ、もう一つは右寄せ
     let a = "SEOUL";
     let b = "TOKYO";
-    println!("{city1:-<15}{city2:->15}", city1 = a, city2 = b); // variable names city1 and city2, pad with -, one to the left, one to the right
+    println!("{city1:-<15}{city2:->15}", city1 = a, city2 = b); // 変数名は city1 と city2、パディング用文字は -、一つは左寄せ、もう一つは右寄せ
 }
 ```
 
-It prints:
+このコードの出力は：
 
 ```text
 ---------TODAY'S NEWS---------
@@ -1404,6 +1424,7 @@ It prints:
 SEOUL--------------------TOKYO
 ```
 
+aihana
 ## Strings
 **[See this chapter on YouTube](https://youtu.be/pSyaGzGg26o)**
 
