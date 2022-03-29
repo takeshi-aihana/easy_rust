@@ -1,5 +1,5 @@
 <!--
-$Lastupdate: 2022/03/16  0:54:12 $
+$Lastupdate: 2022/03/29 10:34:26 $
 -->
 ## Updates
 ![example workflow name](https://github.com/Dhghomon/easy_rust/workflows/github%20pages/badge.svg)
@@ -53,11 +53,11 @@ Rust は理解するために立ち止まって考えなければならないプ
   - ['hello, world!' を出力する](#hello-world-を出力する)
     - [変数の宣言とコード・ブロック](#変数の宣言とコードブロック)
   - [通常の出力とデバッグ出力](#通常の出力とデバッグ出力)
-    - [Smallest and largest numbers](#smallest-and-largest-numbers)
-  - [Mutability (changing)](#mutability-changing)
-    - [Shadowing](#shadowing)
-  - [The stack, the heap, and pointers](#the-stack-the-heap-and-pointers)
-  - [More about printing](#more-about-printing)
+    - [最小値と最大値](#最小値と最大値)
+  - [可変性（Mutability）](#可変性mutability)
+    - [シャドー化（Shadowing）](#シャドー化shadowing)
+  - [スタックとヒープ、そしてポインタ](#スタックとヒープそしてポインタ)
+  - [出力について詳細](#出力について詳細)
   - [Strings](#strings)
   - [const and static](#const-and-static)
   - [More on references](#more-on-references)
@@ -1270,7 +1270,7 @@ fn main() {
 
 
 他に、ユニコードをエスケープする方法もあります。これは文字列の中にあるすべてのユニコード番号を出力します：`\u{}`
-出力する際に `{}` の中に16進数が入ります。
+出力する際に中括弧 `{}` の中に16進数が入ります。
 次はユニコード番号を取得し出力する方法の簡単な例です：
 
 ```rust
@@ -1330,9 +1330,9 @@ fn main() {
 したがって、この出力は `This is Adrian Fahrenheit Țepeș, son of Vlad Țepeș` になります。
 
 
-実際は、中括弧 `{}` の中にはたくさんの変数が並んだとても複雑な文字列なのかもしれません。
+実際は、中括弧 `{}` の中にはたくさんの変数が並んだとても複雑な文字列になるかもしれません。
 あるいは一個の変数を何度も出力する必要があるかもしれません。
-そのような場合は中括弧 `{}` には数字ではなく変数名を付与すると良いかもしれません：
+そのような場合は中括弧 `{}` には数字ではなく変数名を付与することをおすすめします：
 
 ```rust
 fn main() {
@@ -1356,17 +1356,17 @@ but Tokyo is not in Korea.
 
 
 Rust ではとても複雑な書式を持つ文字列を出力することができます。
-この時に使用する書式指定子は次のとおりです：
+この時に使用する中括弧 `{}` に書くもの（書式指定子）は次のとおりです：
 
 ``{変数名:パディング文字 配置 最小数.最大数}``
 
 これには、次のように問答しながら理解してみて下さい：
 
 1) 変数名は必要はないか？
-必要ならば `{country}` のように最初に変数名を書いて下さい
+必要な場合は `{country}` のように最初に変数名を書いて下さい
 （さらに、この下にある他の書式を追加したい場合は、変数名の後ろにコロン `:` を付けて下さい）。
 2) 桁数を揃えるためのパディング文字は必要ないか？
-たとえば ``55`` に「3個のゼロ」を付けると ``00055`` のように出力されます。
+たとえば ``55`` にパディング文字として「3個のゼロ」を付けると ``00055`` のように出力されます。
 3) 文字列の配置（左寄せ / 中央寄せ / 右寄せ）を指定するか？
 4) 文字数の下限を指定するか？（最小値を書くだけです）
 5) 文字数の上限を指定するか？（`.` を付けてから最大値を書いて下さい）
@@ -1389,7 +1389,7 @@ fn main() {
 - 文字数の上限は？ `{:ㅎ^11}` にはない： `.` が付いた数値がない。
 
 
-次は、さまざまな書式を適用した例です：
+次は、さまざまな書式指定子を適用した例です：
 
 ```rust
 fn main() {
@@ -1412,28 +1412,42 @@ SEOUL--------------------TOKYO
 ```
 
 aihana
-## Strings
-**[See this chapter on YouTube](https://youtu.be/pSyaGzGg26o)**
+## 文字列
+**[この章の YouTube を観る](https://youtu.be/pSyaGzGg26o)**
 
-Rust has two main types of strings: `String` and `&str`. What is the difference?
+Rust が扱う文字列の型には二種類あります:
+`String` 型と `&str` 型です。
+この二つの型は何が違うのか分かりますか？
 
-- `&str` is a simple string. When you write `let my_variable = "Hello, world!"`, you create a `&str`. A `&str` is very fast.
-- `String` is a more complicated string. It is a bit slower, but it has more functions. A `String` is a pointer, with data on the heap.
+- `&str` 型は単なる文字列を表します。
+`let my_variable = "Hello, world!"` と書くと `&str` が生成されます。
+`&str` はとても高速です。
+- `String` 型はもっと複雑な文字列を表します。
+少し遅いですが、たくさんの機能があります。
+`String` はポインタなので、実際のデータはヒープ領域にあります。
 
-Also note that `&str` has the `&` in front of it because you need a reference to use a `str`. That's because of the reason we saw above: the stack needs to know the size. So we give it a `&` that it knows the size of, and then it is happy. Also, because you use a `&` to interact with a `str`, you don't own it. But a `String` is an *owned* type. We will soon learn why that is important to know.
+さらに `&str` 型の場合に `str` を使う時は参照が必要になってくるので `str` の前に `&` が付くということに注意して下さい。
+これは前に説明した理由からきています：
+すなわち、スタックの場合は正確なサイズを知っておく必要があるということです。
+そのため `&` を付けてサイズを取得するようにしています。
+また `&` を使って `str` を操作するためには `str` を変数に「格納しない」で参照するだけです。
+反対に `String` の方は変数に「*格納する*」ケースです。
+なぜ、この理由が重要かについては、これから説明します。
 
-Both `&str` and `String` are UTF-8. For example, you can write:
+`&str` 型と `String` 型のデータはどちらも UTF-8 です。
+たとえば、次のように書けます：
 
 ```rust
 fn main() {
-    let name = "서태지"; // This is a Korean name. No problem, because a &str is UTF-8.
-    let other_name = String::from("Adrian Fahrenheit Țepeș"); // Ț and ș are no problem in UTF-8.
+    let name = "서태지"; // これはハングル文字ですが問題ありません。なぜなら &str は UTF-8 だからです
+    let other_name = String::from("Adrian Fahrenheit Țepeș"); // Ț と ș は UTF-8 なので問題ありません
 }
 ```
 
-You can see in `String::from("Adrian Fahrenheit Țepeș")` that it is easy to make a `String` from a `&str`. The two types are very closely linked together, even though they are different.
+`String::from("Adrian Fahrenheit Țepeș")` という文の中で一個の `&str` 型から一個の `String` 型に変換しているのが分かると思います。
+これら二つの異なる型は非常に密接に関連しあっています。
 
-You can even write emojis, thanks to UTF-8.
+絵文字だって書けます。UTF-8 に感謝デス。
 
 ```rust
 fn main() {
@@ -1442,7 +1456,10 @@ fn main() {
 }
 ```
 
-On your computer that will print `My name is actually 😂` unless your command line can't print it. Then it will show `My name is actually �`. But Rust has no problem with emojis or any other Unicode.
+Then it will show `My name is actually �`. But Rust has no problem with emojis or any other Unicode.
+お使いのコンピュータでは `My name is actually 😂` と出力されます。
+ただし端末で実行する場合を除きます（端末で実行すると `My name is actually �` と出力されるでしょう）。
+しかし Rust で絵文字やその他のユニコードを使用することについては問題ありません。
 
 Let's look at the reason for using a `&` for `str`s again to make sure we understand.
 
