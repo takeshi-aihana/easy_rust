@@ -1,5 +1,5 @@
 <!--
-$Lastupdate: 2022/04/01 13:03:01 $
+$Lastupdate: 2022/04/03 19:40:46 $
 -->
 ## Updates
 ![example workflow name](https://github.com/Dhghomon/easy_rust/workflows/github%20pages/badge.svg)
@@ -58,7 +58,7 @@ Rust は理解するために立ち止まって考えなければならないプ
     - [シャドー化（Shadowing）](#シャドー化shadowing)
   - [スタックとヒープ、そしてポインタ](#スタックとヒープそしてポインタ)
   - [出力について詳細](#出力について詳細)
-  - [Strings](#strings)
+  - [いろいろな文字列型](#いろいろな文字列型)
   - [const and static](#const-and-static)
   - [More on references](#more-on-references)
   - [Mutable references](#mutable-references)
@@ -1411,8 +1411,7 @@ fn main() {
 SEOUL--------------------TOKYO
 ```
 
-aihana
-## 文字列
+## いろいろな文字列型
 **[この章の YouTube を観る](https://youtu.be/pSyaGzGg26o)**
 
 Rust が扱う文字列の型には二種類あります:
@@ -1555,7 +1554,7 @@ fn main() {
 
 一個の文字列を得ることができます。
 
-
+aihana
 ## const and static
 **[See this chapter on YouTube](https://youtu.be/Ky3HqkWUcI0)**
 
