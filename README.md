@@ -1,5 +1,5 @@
 <!--
-$Lastupdate: 2022/04/03 19:40:46 $
+$Lastupdate: 2022/04/03 19:42:04 $
 -->
 ## Updates
 ![example workflow name](https://github.com/Dhghomon/easy_rust/workflows/github%20pages/badge.svg)
@@ -1517,7 +1517,6 @@ fn main() {
 上の例では  *together* という名前が付いた文字列を生成していますが、まだ出力していません。
 
 
-One other way to make a String is called `.into()` but it is a bit different because `.into()` isn't just for making a `String`. Some types can easily convert to and from another type using `From` and `.into()`. And if you have `From`, then you also have `.into()`. `From` is clearer because you already know the types: you know that `String::from("Some str")` is a `String` from a `&str`. But with `.into()`, sometimes the compiler doesn't know:
 文字列を生成するもう一つの方法に `.into()` というものがありますが、これはちょっと違います。
 `.into()` は `String` 型そのものを生成するわけではないからです。
 `From` と `.into()` を使うと一部の型を簡単に別の型に変換できます。
