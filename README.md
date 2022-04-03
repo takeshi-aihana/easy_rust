@@ -1,5 +1,5 @@
 <!--
-$Lastupdate: 2022/03/29 10:34:26 $
+$Lastupdate: 2022/04/01 13:03:01 $
 -->
 ## Updates
 ![example workflow name](https://github.com/Dhghomon/easy_rust/workflows/github%20pages/badge.svg)
@@ -1420,7 +1420,7 @@ Rust が扱う文字列の型には二種類あります:
 この二つの型は何が違うのか分かりますか？
 
 - `&str` 型は単なる文字列を表します。
-`let my_variable = "Hello, world!"` と書くと `&str` が生成されます。
+`let my_variable = "Hello, world!"` と書くと `&str` 型の変数が生成されます。
 `&str` はとても高速です。
 - `String` 型はもっと複雑な文字列を表します。
 少し遅いですが、たくさんの機能があります。
@@ -1431,7 +1431,7 @@ Rust が扱う文字列の型には二種類あります:
 すなわち、スタックの場合は正確なサイズを知っておく必要があるということです。
 そのため `&` を付けてサイズを取得するようにしています。
 また `&` を使って `str` を操作するためには `str` を変数に「格納しない」で参照するだけです。
-反対に `String` の方は変数に「*格納する*」ケースです。
+反対に `String` 型の方はデータを変数に「*格納する*」タイプです。
 なぜ、この理由が重要かについては、これから説明します。
 
 `&str` 型と `String` 型のデータはどちらも UTF-8 です。
@@ -1440,7 +1440,7 @@ Rust が扱う文字列の型には二種類あります:
 ```rust
 fn main() {
     let name = "서태지"; // これはハングル文字ですが問題ありません。なぜなら &str は UTF-8 だからです
-    let other_name = String::from("Adrian Fahrenheit Țepeș"); // Ț と ș は UTF-8 なので問題ありません
+    let other_name = String::from("Adrian Fahrenheit Țepeș"); // UTF-8 の場合 Ț と ș の文字も問題になりません
 }
 ```
 
@@ -1456,27 +1456,27 @@ fn main() {
 }
 ```
 
-Then it will show `My name is actually �`. But Rust has no problem with emojis or any other Unicode.
-お使いのコンピュータでは `My name is actually 😂` と出力されます。
+お使いのコンピュータでは `My name is actually 😂` と出力されると思います。
 ただし端末で実行する場合を除きます（端末で実行すると `My name is actually �` と出力されるでしょう）。
 しかし Rust で絵文字やその他のユニコードを使用することについては問題ありません。
 
-Let's look at the reason for using a `&` for `str`s again to make sure we understand.
+確実に理解するため、もう一度 `str` で `&` を使用する利用について見ていくことにしましょう。
 
-- `str` is a dynamically sized type (dynamically sized = the size can be different). For example, the names "서태지" and "Adrian Fahrenheit Țepeș" are not the same size:
+- `str` は動的にサイズが変更される型です（「動的にサイズが変更される」とはサイズが異なる場合があるとういことです）。
+たとえば、人の名前を意味する "서태지" と "Adrian Fahrenheit Țepeș" は同じサイズではありません：
 
 ```rust
 fn main() {
 
-    println!("A String is always {:?} bytes. It is Sized.", std::mem::size_of::<String>()); // std::mem::size_of::<Type>() gives you the size in bytes of a type
+    println!("A String is always {:?} bytes. It is Sized.", std::mem::size_of::<String>()); // std::mem::size_of::<Type>() は Type のサイズ（バイト単位）を返す
     println!("And an i8 is always {:?} bytes. It is Sized.", std::mem::size_of::<i8>());
     println!("And an f64 is always {:?} bytes. It is Sized.", std::mem::size_of::<f64>());
-    println!("But a &str? It can be anything. '서태지' is {:?} bytes. It is not Sized.", std::mem::size_of_val("서태지")); // std::mem::size_of_val() gives you the size in bytes of a variable
+    println!("But a &str? It can be anything. '서태지' is {:?} bytes. It is not Sized.", std::mem::size_of_val("서태지")); // std::mem::size_of_val() は変数のサイズ（バイト単位）を返す
     println!("And 'Adrian Fahrenheit Țepeș' is {:?} bytes. It is not Sized.", std::mem::size_of_val("Adrian Fahrenheit Țepeș"));
 }
 ```
 
-This prints:
+この出力は:
 
 ```text
 A String is always 24 bytes. It is Sized.
@@ -1486,15 +1486,21 @@ But a &str? It can be anything. '서태지' is 9 bytes. It is not Sized.
 And 'Adrian Fahrenheit Țepeș' is 25 bytes. It is not Sized.
 ```
 
-That is why we need a &, because `&` makes a pointer, and Rust knows the size of the pointer. So the pointer goes on the stack. If we wrote `str`, Rust wouldn't know what to do because it doesn't know the size.
+キーワードの `&` は一個のをポインタを作成し、Rust はそのポインタのサイズを知っているということが `&` を付ける理由です。
+したがってポインタはスタックに格納できます。
+もし `str` と記述してしまうと、Rust は（実際に文字列を格納するまで）サイズを知ることができないので何をどうすればよいか分からないということになります。
 
 
+文字列を作成する方法はいろいろあります。
+たとえば：
 
-There are many ways to make a `String`. Here are some:
-
-- `String::from("This is the string text");` This is a method for String that takes text and creates a String.
-- `"This is the string text".to_string()`. This is a method for &str that makes it a String.
-- The `format!` macro. This is like `println!` except it creates a String instead of printing. So you can do this:
+- `String::from("This is the string text");`
+は `String` 型のメソッドの一つで、文字列を受け取って一個の文字列を生成します。
+- `"This is the string text".to_string()`.
+は `&str` 型のメソッドの一つで、 一個の文字列を生成します。
+- マクロの`format!`
+は `println!` と似ていますが、文字列を出力する代わりに文字列を生成する点が違います。
+たとえばマクロ `formt!` を使った例は次のとおりです：
 
 ```rust
 fn main() {
@@ -1509,9 +1515,17 @@ fn main() {
 }
 ```
 
-Now we have a String named *together*, but did not print it yet.
+上の例では  *together* という名前が付いた文字列を生成していますが、まだ出力していません。
+
 
 One other way to make a String is called `.into()` but it is a bit different because `.into()` isn't just for making a `String`. Some types can easily convert to and from another type using `From` and `.into()`. And if you have `From`, then you also have `.into()`. `From` is clearer because you already know the types: you know that `String::from("Some str")` is a `String` from a `&str`. But with `.into()`, sometimes the compiler doesn't know:
+文字列を生成するもう一つの方法に `.into()` というものがありますが、これはちょっと違います。
+`.into()` は `String` 型そのものを生成するわけではないからです。
+`From` と `.into()` を使うと一部の型を簡単に別の型に変換できます。
+また `From` を使った場合、さらに `.into()` を使えます。
+`From` はすでに型が分かっているのでより明確になります：
+つまり、`String::from("Some str")` は一個の `&str` 型から一個の `String` 型に変換します。
+ただし `.into()` を使うと、次に示すように、まれに Rust が認識できない場合が出てきます。：
 
 ```rust
 fn main() {
@@ -1519,7 +1533,9 @@ fn main() {
 }
 ```
 
-Rust doesn't know what type you want, because many types can be made from a `&str`. It says, "I can make a &str into a lot of things. Which one do you want?"
+Rust はここで何の型が要求しているのか判断がつきません。
+なぜなら、`&str` 型から変換できる型がたくさんあるからです。
+そのため Rust は「`&str` 型をたくさんの型に変換できますが。どの型にしますか？」と言っているのです。
 
 ```text
 error[E0282]: type annotations needed
@@ -1529,7 +1545,7 @@ error[E0282]: type annotations needed
   |         ^^^^^^^^^ consider giving `my_string` a type
 ```
 
-So you can do this:
+そのため次のように記述すると
 
 ```rust
 fn main() {
@@ -1537,7 +1553,8 @@ fn main() {
 }
 ```
 
-And now you get a String.
+一個の文字列を得ることができます。
+
 
 ## const and static
 **[See this chapter on YouTube](https://youtu.be/Ky3HqkWUcI0)**
