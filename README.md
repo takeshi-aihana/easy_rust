@@ -1,5 +1,5 @@
 <!--
-$Lastupdate: 2022/04/04 20:16:19 $
+$Lastupdate: 2022/04/04 21:11:19 $
 -->
 ## Updates
 ![example workflow name](https://github.com/Dhghomon/easy_rust/workflows/github%20pages/badge.svg)
@@ -59,8 +59,8 @@ Rust は理解するために立ち止まって考えなければならないプ
   - [スタックとヒープ、そしてポインタ](#スタックとヒープそしてポインタ)
   - [出力について詳細](#出力について詳細)
   - [いろいろな文字列型](#いろいろな文字列型)
-  - [const and static](#const-and-static)
-  - [More on references](#more-on-references)
+  - [const と static](#const-と-static)
+  - [参照ついてもう少し詳しく](#参照ついてもう少し詳しくs)
   - [Mutable references](#mutable-references)
     - [Shadowing again](#shadowing-again)
   - [Giving references to functions](#giving-references-to-functions)
