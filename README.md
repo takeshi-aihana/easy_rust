@@ -1,5 +1,5 @@
 <!--
-$Lastupdate: 2022/04/04 21:12:38 $
+$Lastupdate: 2022/04/04 21:20:42 $
 -->
 ## Updates
 ![example workflow name](https://github.com/Dhghomon/easy_rust/workflows/github%20pages/badge.svg)
@@ -1563,10 +1563,10 @@ fn main() {
 これらが宣言する変数は変化しない値です（`const` は定数を意味します）。
 二つの違いは次のとおりです：
 
-- `const` は変化しない値を宣言する際に使用し、宣言した名前は、この変数を使用する際に実際の値で置き換えられます。
-- `static` は `const` に似ていますが、値が格納されるメモリの場所が固定されており、グローバル変数として機能します。
+- `const` は変化しない値を宣言する際に使用し、宣言した名前は、この変数を使用する際に実際の値で置き換えられます
+- `static` は `const` に似ていますが、値が格納されるメモリの場所が固定されており、グローバル変数として機能します
 
-このように、これらの機能はほぼ同じです。
+このように両者の機能はほぼ同じです。
 ほとんどの Rust のプログラマは `const` を使います。
 
 プログラムのどこからでも参照できるように、「変数名を全て大文字」にして `main()` 関数の外側に書きます。
@@ -1574,7 +1574,7 @@ fn main() {
 たとえば次のように書きます：
 `const NUMBER_OF_MONTHS: u32 = 12;` や `static SEASONS: [&str; 4] = ["Spring", "Summer", "Fall", "Winter"];`
 
-aihana
+
 ## 参照ついてもう少し詳しく
 **[この章の YouTube を観る](https://youtu.be/R13sQ8SNoEQ)**
 
@@ -1594,11 +1594,10 @@ fn main() {
 
 この出力は `Austria` です。
 
-In the code, `country` is a `String`. We then created two references to `country`. They have the type `&String`, which you say is a "reference to a String". We could create three references or one hundred references to `country` and it would be no problem.
 上の例で `country` は一個の `String` 型です。
-そのあとに `country` を指す参照を二つ生成しています。
+そのあとに、この `country` を指す参照を二つ生成しています。
 これらの参照はそれぞれ `&String` 型で、「文字列への参照」であると言います。
-もちろん `country` への参照を三個でも百個でも作成することは可能で問題はありません。
+もちろん `country` への参照を三個でも百個でも作成することは可能で、それ自他は問題はありません。
 
 しかし、次の例は問題があります:
 
@@ -1614,19 +1613,16 @@ fn main() {
 }
 ```
 
-The function `return_str()` creates a String, then it creates a reference to the String. Then it tries to return the reference. But the String `country` only lives inside the function, and then it dies. Once a variable is gone, the computer will clean up the memory and use it for something else. So after the function is over, `country_ref` is referring to memory that is already gone, and that's not okay. Rust prevents us from making a mistake with memory here.
 関数の `return_str()` は一個の `String` 型を生成してから、それを指す参照を生成しています。
 そして最後にその参照を返そうとしてます。
-しかし `String` 型の `country` のライフタイムは関数の中だけで、関数が呼ばれたあとに「死にます」。
-変数がなくなると、コンピュータはメモリをきれいにして、それを他の目的に使用します。
-そのため関数が呼ばれたあと `country_ref` はすでになくなったメモリを参照していることにになり、これは問題です。
+しかし `String` 型の `country` のライフタイムは関数の中だけであり、関数が呼ばれたあとに「亡くなります」。
+変数が「亡くなる」と、コンピュータはメモリをきれいにして、それを他の目的に使用します。
+そのため関数が呼ばれたあと `country_ref` はすでに「亡くなった」メモリを参照していることにになり、これは問題です。
 Rust はこのようなメモリを使って問題が発生しないようにしてくれます。
-
-This is the important part about the "owned" type that we talked about above. Because you own a `String`, you can pass it around. But a `&String` will die if its `String` dies, so you don't pass around "ownership" with it.
 
 これが、先に説明した「所有する」系の重要な部分です。
 この例では、一個の `String` 型を所有しているので、それを返すことができます。
-ただし `&String` にすると参照元の `String` 型が死ぬと `&String` 型も死んでしまうので変数の「所有権（*Ownership*）」を渡すことはありません。
+ただし `&String` にすると参照元の `String` 型が「亡くなる」と `&String` 型も「亡くなる」ので変数の「所有権（*Ownership*）」を渡すことはありません。
 
 aihana
 ## Mutable references
