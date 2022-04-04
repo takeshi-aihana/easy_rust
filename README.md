@@ -1,5 +1,5 @@
 <!--
-$Lastupdate: 2022/04/03 19:42:04 $
+$Lastupdate: 2022/04/04 20:16:19 $
 -->
 ## Updates
 ![example workflow name](https://github.com/Dhghomon/easy_rust/workflows/github%20pages/badge.svg)
@@ -1523,7 +1523,7 @@ fn main() {
 また `From` を使った場合、さらに `.into()` を使えます。
 `From` はすでに型が分かっているのでより明確になります：
 つまり、`String::from("Some str")` は一個の `&str` 型から一個の `String` 型に変換します。
-ただし `.into()` を使うと、次に示すように、まれに Rust が認識できない場合が出てきます。：
+ただし `.into()` を使うと、次に示すような、まれに Rust が認識できないエラーが発生することがあります：
 
 ```rust
 fn main() {
@@ -1533,7 +1533,7 @@ fn main() {
 
 Rust はここで何の型が要求しているのか判断がつきません。
 なぜなら、`&str` 型から変換できる型がたくさんあるからです。
-そのため Rust は「`&str` 型をたくさんの型に変換できますが。どの型にしますか？」と言っているのです。
+そのため Rust は「`&str` 型をたくさんの型に変換できますが。どの型にしますか？」と聞いてきているのです。
 
 ```text
 error[E0282]: type annotations needed
@@ -1543,7 +1543,7 @@ error[E0282]: type annotations needed
   |         ^^^^^^^^^ consider giving `my_string` a type
 ```
 
-そのため次のように記述すると
+そのため次のように記述すれば
 
 ```rust
 fn main() {
@@ -1551,27 +1551,36 @@ fn main() {
 }
 ```
 
-一個の文字列を得ることができます。
+`String` 型の文字列を得ることができます。
+
+## const と static
+**[この章の YouTube を観る](https://youtu.be/Ky3HqkWUcI0)**
+
+`let` 以外にも変数を宣言する方法がいくつかあります。
+それが `const` と `static` です。
+これらを使うと Rust は型の推論は行いません：
+したがって、きちんと型を明記する必要があります。
+これらが宣言する変数は変化しない値です（`const` は定数を意味します）。
+二つの違いは次のとおりです：
+
+- `const` は変化しない値を宣言する際に使用し、宣言した名前は、この変数を使用する際に実際の値で置き換えられます。
+- `static` は `const` に似ていますが、値が格納されるメモリの場所が固定されており、グローバル変数として機能します。
+
+このように、これらの機能はほぼ同じです。
+ほとんどの Rust のプログラマは `const` を使います。
+
+プログラムのどこからでも参照できるように、「変数名を全て大文字」にして `main()` 関数の外側に書きます。
+
+たとえば次のように書きます：
+`const NUMBER_OF_MONTHS: u32 = 12;` や `static SEASONS: [&str; 4] = ["Spring", "Summer", "Fall", "Winter"];`
 
 aihana
-## const and static
-**[See this chapter on YouTube](https://youtu.be/Ky3HqkWUcI0)**
+## 参照ついてもう少し詳しく
+**[この章の YouTube を観る](https://youtu.be/R13sQ8SNoEQ)**
 
-There are two other ways to declare values, not just with `let`. These are `const` and `static`. Also, Rust won't use type inference: you need to write the type for them. These are for values that don't change (`const` means constant). The difference is that:
-
-- `const` is for values that don't change, the name is replaced with the value when it's used,
-- `static` is similar to `const`, but has a fixed memory location and can act as a global variable.
-
-So they are almost the same. Rust programmers almost always use `const`.
-
-You write them with ALL CAPITAL LETTERS, and usually outside of `main` so that they can live for the whole program.
-
-Two examples are: `const NUMBER_OF_MONTHS: u32 = 12;` and `static SEASONS: [&str; 4] = ["Spring", "Summer", "Fall", "Winter"];`
-
-## More on references
-**[See this chapter on YouTube](https://youtu.be/R13sQ8SNoEQ)**
-
-References are very important in Rust. Rust uses references to make sure that all memory access is safe. We know that we use `&` to create a reference:
+Rust で参照（*References*）はとても重要です。
+Rust は全てのメモリアクセスが安全なものであることを参照を使って確認しています。
+通常はキーワードの `&` を使って参照を作成します：
 
 ```rust
 fn main() {
@@ -1583,11 +1592,15 @@ fn main() {
 }
 ```
 
-This prints `Austria`.
+この出力は `Austria` です。
 
 In the code, `country` is a `String`. We then created two references to `country`. They have the type `&String`, which you say is a "reference to a String". We could create three references or one hundred references to `country` and it would be no problem.
+上の例で `country` は一個の `String` 型です。
+そのあとに `country` を指す参照を二つ生成しています。
+これらの参照はそれぞれ `&String` 型で、「文字列への参照」であると言います。
+もちろん `country` への参照を三個でも百個でも作成することは可能で問題はありません。
 
-But this is a problem:
+しかし、次の例は問題があります:
 
 ```rust
 fn return_str() -> &str {
@@ -1602,9 +1615,20 @@ fn main() {
 ```
 
 The function `return_str()` creates a String, then it creates a reference to the String. Then it tries to return the reference. But the String `country` only lives inside the function, and then it dies. Once a variable is gone, the computer will clean up the memory and use it for something else. So after the function is over, `country_ref` is referring to memory that is already gone, and that's not okay. Rust prevents us from making a mistake with memory here.
+関数の `return_str()` は一個の `String` 型を生成してから、それを指す参照を生成しています。
+そして最後にその参照を返そうとしてます。
+しかし `String` 型の `country` のライフタイムは関数の中だけで、関数が呼ばれたあとに「死にます」。
+変数がなくなると、コンピュータはメモリをきれいにして、それを他の目的に使用します。
+そのため関数が呼ばれたあと `country_ref` はすでになくなったメモリを参照していることにになり、これは問題です。
+Rust はこのようなメモリを使って問題が発生しないようにしてくれます。
 
 This is the important part about the "owned" type that we talked about above. Because you own a `String`, you can pass it around. But a `&String` will die if its `String` dies, so you don't pass around "ownership" with it.
 
+これが、先に説明した「所有する」系の重要な部分です。
+この例では、一個の `String` 型を所有しているので、それを返すことができます。
+ただし `&String` にすると参照元の `String` 型が死ぬと `&String` 型も死んでしまうので変数の「所有権（*Ownership*）」を渡すことはありません。
+
+aihana
 ## Mutable references
 **[See this chapter on YouTube](https://youtu.be/G48z6Rv76vc)**
 
